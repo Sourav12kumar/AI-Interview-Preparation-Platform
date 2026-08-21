@@ -6,6 +6,8 @@ import com.sourav.interviewprep.auth.repository.RoleRepository;
 import com.sourav.interviewprep.auth.repository.UserRepository;
 import com.sourav.interviewprep.interview.repository.InterviewQuestionRepository;
 import com.sourav.interviewprep.interview.repository.InterviewSessionRepository;
+import com.sourav.interviewprep.evaluation.repository.AnswerEvaluationRepository;
+import com.sourav.interviewprep.evaluation.repository.InterviewAnswerRepository;
 import com.sourav.interviewprep.profile.repository.CandidateProfileRepository;
 import com.sourav.interviewprep.profile.repository.SkillRepository;
 import com.sourav.interviewprep.profile.repository.TargetCompanyRepository;
@@ -65,6 +67,12 @@ class AuthenticationFlowIntegrationTest {
     @Autowired
     private InterviewSessionRepository interviewSessionRepository;
 
+    @Autowired
+    private AnswerEvaluationRepository answerEvaluationRepository;
+
+    @Autowired
+    private InterviewAnswerRepository interviewAnswerRepository;
+
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -72,6 +80,8 @@ class AuthenticationFlowIntegrationTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
+        answerEvaluationRepository.deleteAll();
+        interviewAnswerRepository.deleteAll();
         interviewQuestionRepository.deleteAll();
         interviewSessionRepository.deleteAll();
         userSkillRepository.deleteAll();

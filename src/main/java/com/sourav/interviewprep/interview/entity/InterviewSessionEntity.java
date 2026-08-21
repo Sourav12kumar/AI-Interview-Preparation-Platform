@@ -104,4 +104,18 @@ public class InterviewSessionEntity {
     public Instant getStartedAt() { return startedAt; }
     public Instant getCompletedAt() { return completedAt; }
     public Instant getCreatedAt() { return createdAt; }
+
+    public void markInProgress() {
+        if (status == InterviewStatus.CREATED) {
+            status = InterviewStatus.IN_PROGRESS;
+            startedAt = Instant.now();
+        }
+    }
+
+    public void complete(BigDecimal score) {
+        markInProgress();
+        status = InterviewStatus.COMPLETED;
+        overallScore = score;
+        completedAt = Instant.now();
+    }
 }

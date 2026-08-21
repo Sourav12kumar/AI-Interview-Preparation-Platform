@@ -2,6 +2,7 @@ package com.sourav.interviewprep.common.exception;
 
 import com.sourav.interviewprep.auth.exception.DuplicateEmailException;
 import com.sourav.interviewprep.auth.exception.InvalidTokenException;
+import com.sourav.interviewprep.evaluation.exception.DuplicateAnswerException;
 import com.sourav.interviewprep.interview.exception.AiGenerationException;
 import com.sourav.interviewprep.interview.exception.InterviewConfigurationException;
 import com.sourav.interviewprep.interview.exception.InterviewNotFoundException;
@@ -38,6 +39,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateSkillAssignmentException.class)
     ResponseEntity<ApiErrorResponse> handleDuplicateSkill(DuplicateSkillAssignmentException exception) {
+        return response(HttpStatus.CONFLICT, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(DuplicateAnswerException.class)
+    ResponseEntity<ApiErrorResponse> handleDuplicateAnswer(DuplicateAnswerException exception) {
         return response(HttpStatus.CONFLICT, exception.getMessage(), Map.of());
     }
 
