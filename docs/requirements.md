@@ -18,7 +18,7 @@ The AI Interview Preparation Platform helps job seekers prepare for technical, H
 |---|---|---|
 | FR-01 | A candidate can register, verify identity, log in, refresh a session, and log out securely. | Must |
 | FR-02 | A candidate can maintain education, experience, target role, target company, and skills. | Must |
-| FR-03 | A candidate can upload a PDF resume and receive ATS score, strengths, weaknesses, and missing keywords. | Must |
+| FR-03 | A candidate can upload a PDF, DOCX, or TXT resume and receive ATS score, strengths, weaknesses, missing keywords, and suggestions. | Must |
 | FR-04 | The system can generate role-, skill-, type-, and difficulty-specific interview questions using Gemini. | Must |
 | FR-05 | A candidate can complete a mock interview one question at a time. | Must |
 | FR-06 | The system can evaluate relevance, clarity, technical correctness, and overall quality of an answer. | Must |
@@ -51,7 +51,7 @@ The first release includes authentication, profile and skills, resume analysis, 
 - A new user can register, log in, and access only their own data.
 - A user can configure a target role and receive a Gemini-generated interview set.
 - Each submitted answer produces numeric scores and actionable feedback.
-- A PDF resume produces a persisted analysis without exposing the Gemini API key.
+- A PDF, DOCX, or TXT resume produces a persisted analysis without exposing the Gemini API key or raw extracted text through APIs.
 - The dashboard summarizes interview and coding performance from stored results.
 - The application starts with MySQL 8.4 and all Flyway migrations applied.
 - CI builds and tests the application on Java 17.

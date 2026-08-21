@@ -25,7 +25,7 @@ erDiagram
 | `roles`, `user_roles` | Role-based authorization |
 | `user_profiles` | Education, experience, target role/company and biography |
 | `skills`, `user_skills` | Normalized skill catalogue and candidate proficiency |
-| `resumes` | Private file metadata, extracted text and Gemini analysis |
+| `resumes` | Private file metadata, extracted text, lifecycle state, target role, and Gemini ATS analysis |
 | `interview_sessions` | One configured mock interview and its overall result |
 | `interview_questions` | Ordered generated or curated questions |
 | `interview_answers` | Candidate response and response time |
@@ -44,4 +44,4 @@ erDiagram
 - Times are persisted in UTC with microsecond precision.
 - Flyway owns the schema; JPA uses `ddl-auto=validate` outside tests.
 
-The executable design is `src/main/resources/db/migration/V1__create_initial_schema.sql`.
+The executable design is the ordered Flyway migration set under `src/main/resources/db/migration`.

@@ -28,6 +28,9 @@ application-local.yml
 *.pem
 *.key
 
+### Private uploaded files ###
+data/
+
 ### Operating systems ###
 .DS_Store
 Thumbs.db

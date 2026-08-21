@@ -55,7 +55,7 @@ com.sourav.interviewprep
 | 3. Profile | Candidate profile, skills, target role/company |
 | 4. Gemini questions | Prompt templates, structured question generation, retry/error handling |
 | 5. Mock interview | Sessions, questions, answers, AI evaluation, scoring |
-| 6. Resume analysis | Secure PDF upload, text extraction, ATS analysis |
+| 6. Resume analysis | Secure PDF/DOCX/TXT upload, Apache Tika extraction, Gemini ATS analysis |
 | 7. Coding practice | Problem catalogue, submissions, isolated runner interface |
 | 8. Analytics | Dashboard summaries, trends, recommendations |
 | 9. Admin and hardening | Admin APIs, audit, rate limiting, observability, deployment |
@@ -66,5 +66,7 @@ com.sourav.interviewprep
 - Controllers validate input and delegate business rules to services.
 - Ownership checks are mandatory for every user-scoped resource.
 - Uploaded resumes are private and addressed by opaque storage keys.
+- Resume bytes and extracted text are size-bounded; list/detail APIs expose analysis metadata, not raw text.
+- Resume content and job descriptions are untrusted data inside Gemini prompts.
 - Code execution will run outside the main API process behind a constrained runner interface.
 - AI responses are untrusted input and must be schema-validated before persistence.

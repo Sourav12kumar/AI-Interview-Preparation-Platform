@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 5
+## Current status: Module 6
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -27,6 +27,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Answer submission with one answer per generated question
 - Gemini-powered scoring, strengths, improvements, and ideal answers
 - Interview progress tracking, completion, and aggregate scoring
+- Private PDF, DOCX, and TXT resume upload with 5 MB limits
+- Apache Tika content detection and bounded text extraction
+- Gemini-powered ATS score, keyword gap, strengths, weaknesses, and suggestions
+- User-owned resume history, reanalysis, and deletion
 
 ## Prerequisites
 
@@ -63,7 +67,7 @@ Expected response:
 }
 ```
 
-Gemini powers interview question generation in Module 4. Keep `GEMINI_API_KEY` and `JWT_SECRET` outside source control; `.env` is ignored by Git.
+Gemini powers interview generation, answer evaluation, and resume analysis. Keep `GEMINI_API_KEY` and `JWT_SECRET` outside source control; `.env` is ignored by Git. Resume files are stored under `RESUME_STORAGE_DIR` (default `./data/resumes`) and this directory must be private in production.
 
 ## Documentation
 
@@ -94,7 +98,12 @@ Gemini powers interview question generation in Module 4. Keep `GEMINI_API_KEY` a
 | `GET` | `/api/v1/interviews/{sessionId}` | Access JWT | Return one owned session and its questions |
 | `POST` | `/api/v1/interviews/{sessionId}/answers` | Access JWT | Submit and evaluate one answer |
 | `GET` | `/api/v1/interviews/{sessionId}/answers` | Access JWT | List evaluated answers for an owned session |
+| `POST` | `/api/v1/resumes` | Access JWT | Upload and extract a PDF, DOCX, or TXT resume |
+| `POST` | `/api/v1/resumes/{resumeId}/analysis` | Access JWT | Run Gemini ATS analysis for a target role/job description |
+| `GET` | `/api/v1/resumes` | Access JWT | List the candidate's resume history |
+| `GET` | `/api/v1/resumes/{resumeId}` | Access JWT | Return one owned resume and its analysis |
+| `DELETE` | `/api/v1/resumes/{resumeId}` | Access JWT | Delete owned resume metadata and private file |
 
 ## Roadmap
 
-The next module adds resume upload, text extraction, and Gemini-powered ATS analysis.
+The next module adds coding-problem catalogue APIs, submissions, and an isolated runner interface.
