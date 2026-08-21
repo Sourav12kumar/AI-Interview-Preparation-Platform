@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 
@@ -34,12 +36,15 @@ public class CodingProblemEntity {
     @Column(nullable = false, length = 20)
     private CodingDifficulty difficulty;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "starter_code", columnDefinition = "JSON")
     private String starterCode;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "test_cases", nullable = false, columnDefinition = "JSON")
     private String testCases;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "JSON")
     private String tags;
 
