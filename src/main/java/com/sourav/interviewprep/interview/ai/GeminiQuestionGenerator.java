@@ -3,6 +3,7 @@ package com.sourav.interviewprep.interview.ai;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
+import com.google.genai.types.Schema;
 import com.sourav.interviewprep.interview.entity.QuestionType;
 import com.sourav.interviewprep.interview.exception.AiGenerationException;
 import org.springframework.stereotype.Component;
@@ -121,23 +122,33 @@ public class GeminiQuestionGenerator implements InterviewQuestionGenerator {
         }
     }
 
-    private Map<String, Object> responseSchema() {
-        Map<String, Object> question = Map.of(
-                "type", "object",
-                "properties", Map.of(
-                        "questionText", Map.of("type", "string"),
-                        "questionType", Map.of(
-                                "type", "string",
-                                "enum", List.of("TECHNICAL", "HR", "BEHAVIORAL", "CODING")),
-                        "expectedTopics", Map.of(
-                                "type", "array",
-                                "items", Map.of("type", "string"))),
-                "required", List.of("questionText", "questionType", "expectedTopics"));
-        return Map.of(
-                "type", "object",
-                "properties", Map.of(
-                        "questions", Map.of("type", "array", "items", question)),
-                "required", List.of("questions"));
+    private Schema responseSchema() {
+        return Schema.fromJson("""
+                {
+                  "type":"object",
+                  "properties":{
+                    "questions":{
+                      "type":"array",
+                      "items":{
+                        "type":"object",
+                        "properties":{
+                          "questionText":{"type":"string"},
+                          "questionType":{
+                            "type":"string",
+                            "enum":["TECHNICAL","HR","BEHAVIORAL","CODING"]
+                          },
+                          "expectedTopics":{
+                            "type":"array",
+                            "items":{"type":"string"}
+                          }
+                        },
+                        "required":["questionText","questionType","expectedTopics"]
+                      }
+                    }
+                  },
+                  "required":["questions"]
+                }
+                """);
     }
 
     private String safe(String value) {
