@@ -4,6 +4,10 @@ import com.sourav.interviewprep.auth.entity.RoleEntity;
 import com.sourav.interviewprep.auth.repository.RefreshTokenRepository;
 import com.sourav.interviewprep.auth.repository.RoleRepository;
 import com.sourav.interviewprep.auth.repository.UserRepository;
+import com.sourav.interviewprep.profile.repository.CandidateProfileRepository;
+import com.sourav.interviewprep.profile.repository.SkillRepository;
+import com.sourav.interviewprep.profile.repository.TargetCompanyRepository;
+import com.sourav.interviewprep.profile.repository.UserSkillRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +45,18 @@ class AuthenticationFlowIntegrationTest {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private UserSkillRepository userSkillRepository;
+
+    @Autowired
+    private TargetCompanyRepository targetCompanyRepository;
+
+    @Autowired
+    private CandidateProfileRepository profileRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
+
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -48,6 +64,10 @@ class AuthenticationFlowIntegrationTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
+        userSkillRepository.deleteAll();
+        targetCompanyRepository.deleteAll();
+        profileRepository.deleteAll();
+        skillRepository.deleteAll();
         refreshTokenRepository.deleteAll();
         userRepository.deleteAll();
         roleRepository.deleteAll();
