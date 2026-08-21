@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 4
+## Current status: Module 5
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -24,6 +24,9 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Gemini-powered personalized interview question generation
 - Persisted interview sessions with AI model and prompt-version metadata
 - Strict structured-output validation and deterministic AI-boundary tests
+- Answer submission with one answer per generated question
+- Gemini-powered scoring, strengths, improvements, and ideal answers
+- Interview progress tracking, completion, and aggregate scoring
 
 ## Prerequisites
 
@@ -89,7 +92,9 @@ Gemini powers interview question generation in Module 4. Keep `GEMINI_API_KEY` a
 | `POST` | `/api/v1/interviews` | Access JWT | Generate and persist a personalized interview |
 | `GET` | `/api/v1/interviews` | Access JWT | List the candidate's interview sessions |
 | `GET` | `/api/v1/interviews/{sessionId}` | Access JWT | Return one owned session and its questions |
+| `POST` | `/api/v1/interviews/{sessionId}/answers` | Access JWT | Submit and evaluate one answer |
+| `GET` | `/api/v1/interviews/{sessionId}/answers` | Access JWT | List evaluated answers for an owned session |
 
 ## Roadmap
 
-The next module adds answer submission and Gemini-powered answer evaluation with structured feedback.
+The next module adds resume upload, text extraction, and Gemini-powered ATS analysis.
