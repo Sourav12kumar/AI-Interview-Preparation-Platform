@@ -12,6 +12,7 @@ import com.sourav.interviewprep.profile.repository.CandidateProfileRepository;
 import com.sourav.interviewprep.profile.repository.SkillRepository;
 import com.sourav.interviewprep.profile.repository.TargetCompanyRepository;
 import com.sourav.interviewprep.profile.repository.UserSkillRepository;
+import com.sourav.interviewprep.resume.repository.ResumeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ class CandidateProfileIntegrationTest {
     @Autowired private InterviewSessionRepository interviewSessionRepository;
     @Autowired private AnswerEvaluationRepository answerEvaluationRepository;
     @Autowired private InterviewAnswerRepository interviewAnswerRepository;
+    @Autowired private ResumeRepository resumeRepository;
 
     private MockMvc mockMvc;
 
@@ -57,6 +59,7 @@ class CandidateProfileIntegrationTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
+        resumeRepository.deleteAll();
         answerEvaluationRepository.deleteAll();
         interviewAnswerRepository.deleteAll();
         interviewQuestionRepository.deleteAll();

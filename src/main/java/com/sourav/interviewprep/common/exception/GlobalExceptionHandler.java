@@ -9,6 +9,9 @@ import com.sourav.interviewprep.interview.exception.InterviewNotFoundException;
 import com.sourav.interviewprep.profile.exception.DuplicateSkillAssignmentException;
 import com.sourav.interviewprep.profile.exception.ProfileNotFoundException;
 import com.sourav.interviewprep.profile.exception.SkillAssignmentNotFoundException;
+import com.sourav.interviewprep.resume.exception.ResumeNotFoundException;
+import com.sourav.interviewprep.resume.exception.ResumeStorageException;
+import com.sourav.interviewprep.resume.exception.ResumeValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -57,9 +61,29 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
     }
 
+    @ExceptionHandler(ResumeNotFoundException.class)
+    ResponseEntity<ApiErrorResponse> handleResumeNotFound(ResumeNotFoundException exception) {
+        return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
+    }
+
     @ExceptionHandler(InterviewConfigurationException.class)
     ResponseEntity<ApiErrorResponse> handleInterviewConfiguration(InterviewConfigurationException exception) {
         return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(ResumeValidationException.class)
+    ResponseEntity<ApiErrorResponse> handleResumeValidation(ResumeValidationException exception) {
+        return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    ResponseEntity<ApiErrorResponse> handleMaxUploadSize(MaxUploadSizeExceededException exception) {
+        return response(HttpStatus.PAYLOAD_TOO_LARGE, "Resume file must not exceed 5 MB", Map.of());
+    }
+
+    @ExceptionHandler(ResumeStorageException.class)
+    ResponseEntity<ApiErrorResponse> handleResumeStorage(ResumeStorageException exception) {
+        return response(HttpStatus.INTERNAL_SERVER_ERROR, "Resume storage operation failed", Map.of());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

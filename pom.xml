@@ -20,6 +20,7 @@
     <properties>
         <java.version>17</java.version>
         <google-genai.version>1.67.0</google-genai.version>
+        <apache-tika.version>3.3.2</apache-tika.version>
     </properties>
 
     <dependencies>
@@ -64,6 +65,16 @@
             <groupId>com.google.genai</groupId>
             <artifactId>google-genai</artifactId>
             <version>${google-genai.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>${apache-tika.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers-standard-package</artifactId>
+            <version>${apache-tika.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

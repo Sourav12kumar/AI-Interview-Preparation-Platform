@@ -18,6 +18,10 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
 
 server:
   port: ${SERVER_PORT:8080}
@@ -41,9 +45,13 @@ gemini:
   model: ${GEMINI_MODEL:gemini-2.5-flash}
 
 app:
+  resume:
+    storage-dir: ${RESUME_STORAGE_DIR:./data/resumes}
+    max-file-size: ${RESUME_MAX_FILE_SIZE:5MB}
+    max-extracted-characters: ${RESUME_MAX_EXTRACTED_CHARACTERS:100000}
   security:
     jwt:
       issuer: ai-interview-preparation-platform
-      secret: ${JWT_SECRET:local-development-secret-change-before-production-1234567890}
+      secret: ${JWT_SECRET}
       access-ttl: ${JWT_ACCESS_TTL:PT15M}
       refresh-ttl: ${JWT_REFRESH_TTL:P7D}
