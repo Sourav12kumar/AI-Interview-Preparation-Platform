@@ -3,12 +3,12 @@ package com.sourav.interviewprep.resume.extraction;
 import com.sourav.interviewprep.resume.config.ResumeProperties;
 import com.sourav.interviewprep.resume.exception.ResumeValidationException;
 import org.apache.tika.Tika;
+import org.apache.tika.exception.WriteLimitReachedException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.BodyContentHandler;
-import org.apache.tika.sax.WriteLimitReachedException;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
