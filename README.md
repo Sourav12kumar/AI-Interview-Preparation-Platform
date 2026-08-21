@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 3
+## Current status: Module 4
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -21,6 +21,9 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Education, experience, target role, and target company management
 - User-owned skill assignments with proficiency and years of use
 - Cross-user access protection and profile integration tests
+- Gemini-powered personalized interview question generation
+- Persisted interview sessions with AI model and prompt-version metadata
+- Strict structured-output validation and deterministic AI-boundary tests
 
 ## Prerequisites
 
@@ -57,7 +60,7 @@ Expected response:
 }
 ```
 
-The Gemini integration will be implemented in Module 4. Keep `GEMINI_API_KEY` and `JWT_SECRET` outside source control; `.env` is ignored by Git.
+Gemini powers interview question generation in Module 4. Keep `GEMINI_API_KEY` and `JWT_SECRET` outside source control; `.env` is ignored by Git.
 
 ## Documentation
 
@@ -83,7 +86,10 @@ The Gemini integration will be implemented in Module 4. Keep `GEMINI_API_KEY` an
 | `POST` | `/api/v1/profile/skills` | Access JWT | Add a skill assignment |
 | `PUT` | `/api/v1/profile/skills/{skillId}` | Access JWT | Update proficiency and years used |
 | `DELETE` | `/api/v1/profile/skills/{skillId}` | Access JWT | Remove a skill assignment |
+| `POST` | `/api/v1/interviews` | Access JWT | Generate and persist a personalized interview |
+| `GET` | `/api/v1/interviews` | Access JWT | List the candidate's interview sessions |
+| `GET` | `/api/v1/interviews/{sessionId}` | Access JWT | Return one owned session and its questions |
 
 ## Roadmap
 
-The next module integrates Gemini to generate personalized interview questions from the candidate profile.
+The next module adds answer submission and Gemini-powered answer evaluation with structured feedback.

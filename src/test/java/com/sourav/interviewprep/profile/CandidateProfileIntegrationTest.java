@@ -4,6 +4,8 @@ import com.sourav.interviewprep.auth.entity.RoleEntity;
 import com.sourav.interviewprep.auth.repository.RefreshTokenRepository;
 import com.sourav.interviewprep.auth.repository.RoleRepository;
 import com.sourav.interviewprep.auth.repository.UserRepository;
+import com.sourav.interviewprep.interview.repository.InterviewQuestionRepository;
+import com.sourav.interviewprep.interview.repository.InterviewSessionRepository;
 import com.sourav.interviewprep.profile.repository.CandidateProfileRepository;
 import com.sourav.interviewprep.profile.repository.SkillRepository;
 import com.sourav.interviewprep.profile.repository.TargetCompanyRepository;
@@ -41,6 +43,8 @@ class CandidateProfileIntegrationTest {
     @Autowired private RefreshTokenRepository refreshTokenRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private RoleRepository roleRepository;
+    @Autowired private InterviewQuestionRepository interviewQuestionRepository;
+    @Autowired private InterviewSessionRepository interviewSessionRepository;
 
     private MockMvc mockMvc;
 
@@ -49,6 +53,8 @@ class CandidateProfileIntegrationTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
+        interviewQuestionRepository.deleteAll();
+        interviewSessionRepository.deleteAll();
         userSkillRepository.deleteAll();
         targetCompanyRepository.deleteAll();
         profileRepository.deleteAll();

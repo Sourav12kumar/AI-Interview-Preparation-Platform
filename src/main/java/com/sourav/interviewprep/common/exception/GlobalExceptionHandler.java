@@ -2,6 +2,9 @@ package com.sourav.interviewprep.common.exception;
 
 import com.sourav.interviewprep.auth.exception.DuplicateEmailException;
 import com.sourav.interviewprep.auth.exception.InvalidTokenException;
+import com.sourav.interviewprep.interview.exception.AiGenerationException;
+import com.sourav.interviewprep.interview.exception.InterviewConfigurationException;
+import com.sourav.interviewprep.interview.exception.InterviewNotFoundException;
 import com.sourav.interviewprep.profile.exception.DuplicateSkillAssignmentException;
 import com.sourav.interviewprep.profile.exception.ProfileNotFoundException;
 import com.sourav.interviewprep.profile.exception.SkillAssignmentNotFoundException;
@@ -9,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -40,6 +44,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ProfileNotFoundException.class, SkillAssignmentNotFoundException.class})
     ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException exception) {
         return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(InterviewNotFoundException.class)
+    ResponseEntity<ApiErrorResponse> handleInterviewNotFound(InterviewNotFoundException exception) {
+        return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(InterviewConfigurationException.class)
+    ResponseEntity<ApiErrorResponse> handleInterviewConfiguration(InterviewConfigurationException exception) {
+        return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    ResponseEntity<ApiErrorResponse> handleUnreadableRequest(HttpMessageNotReadableException exception) {
+        return response(HttpStatus.BAD_REQUEST, "Request body is malformed or contains an invalid value", Map.of());
+    }
+
+    @ExceptionHandler(AiGenerationException.class)
+    ResponseEntity<ApiErrorResponse> handleAiGeneration(AiGenerationException exception) {
+        return response(HttpStatus.BAD_GATEWAY, exception.getMessage(), Map.of());
     }
 
     @ExceptionHandler({InvalidTokenException.class, AuthenticationException.class})
