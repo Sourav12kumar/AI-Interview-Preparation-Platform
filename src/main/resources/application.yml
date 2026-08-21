@@ -39,3 +39,11 @@ info:
 gemini:
   api-key: ${GEMINI_API_KEY:}
   model: ${GEMINI_MODEL:gemini-2.5-flash}
+
+app:
+  security:
+    jwt:
+      issuer: ai-interview-preparation-platform
+      secret: ${JWT_SECRET:local-development-secret-change-before-production-1234567890}
+      access-ttl: ${JWT_ACCESS_TTL:PT15M}
+      refresh-ttl: ${JWT_REFRESH_TTL:P7D}

@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Module 1 status
+## Current status: Module 2
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -12,6 +12,11 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Public health endpoint
 - Automated test and GitHub Actions workflow
 - Gemini SDK dependency and secret-safe configuration
+- Registration and login with BCrypt password hashing
+- Role-based authorization using `ROLE_USER` and `ROLE_ADMIN`
+- Signed JWT access and refresh tokens
+- Refresh-token rotation, revocation, logout, and replay detection
+- Authenticated current-user endpoint and integration tests
 
 ## Prerequisites
 
@@ -48,7 +53,7 @@ Expected response:
 }
 ```
 
-The Gemini integration will be implemented in Module 4. Keep `GEMINI_API_KEY` outside source control; `.env` is ignored by Git.
+The Gemini integration will be implemented in Module 4. Keep `GEMINI_API_KEY` and `JWT_SECRET` outside source control; `.env` is ignored by Git.
 
 ## Documentation
 
@@ -62,7 +67,12 @@ The Gemini integration will be implemented in Module 4. Keep `GEMINI_API_KEY` ou
 |---|---|---|---|
 | `GET` | `/api/v1/health` | Public | Application health check |
 | `GET` | `/actuator/health` | Public | Infrastructure health check |
+| `POST` | `/api/v1/auth/register` | Public | Register and receive a token pair |
+| `POST` | `/api/v1/auth/login` | Public | Authenticate and receive a token pair |
+| `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
+| `POST` | `/api/v1/auth/logout` | Refresh JWT | Revoke the supplied refresh session |
+| `GET` | `/api/v1/auth/me` | Access JWT | Return the authenticated user |
 
 ## Roadmap
 
-The next module adds registration, login, role authorization, JWT access/refresh tokens, logout, and authentication tests.
+The next module adds candidate profile, skills, target role, and target company management.
