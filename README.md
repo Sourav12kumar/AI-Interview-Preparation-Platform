@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 2
+## Current status: Module 3
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -17,6 +17,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Signed JWT access and refresh tokens
 - Refresh-token rotation, revocation, logout, and replay detection
 - Authenticated current-user endpoint and integration tests
+- Candidate profile create/update, read, and delete
+- Education, experience, target role, and target company management
+- User-owned skill assignments with proficiency and years of use
+- Cross-user access protection and profile integration tests
 
 ## Prerequisites
 
@@ -72,7 +76,14 @@ The Gemini integration will be implemented in Module 4. Keep `GEMINI_API_KEY` an
 | `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
 | `POST` | `/api/v1/auth/logout` | Refresh JWT | Revoke the supplied refresh session |
 | `GET` | `/api/v1/auth/me` | Access JWT | Return the authenticated user |
+| `GET` | `/api/v1/profile` | Access JWT | Return the candidate profile aggregate |
+| `PUT` | `/api/v1/profile` | Access JWT | Create or replace profile details and target companies |
+| `DELETE` | `/api/v1/profile` | Access JWT | Delete profile details and assignments |
+| `GET` | `/api/v1/profile/skills` | Access JWT | List the candidate's skills |
+| `POST` | `/api/v1/profile/skills` | Access JWT | Add a skill assignment |
+| `PUT` | `/api/v1/profile/skills/{skillId}` | Access JWT | Update proficiency and years used |
+| `DELETE` | `/api/v1/profile/skills/{skillId}` | Access JWT | Remove a skill assignment |
 
 ## Roadmap
 
-The next module adds candidate profile, skills, target role, and target company management.
+The next module integrates Gemini to generate personalized interview questions from the candidate profile.

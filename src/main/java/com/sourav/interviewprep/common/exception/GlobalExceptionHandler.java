@@ -2,6 +2,9 @@ package com.sourav.interviewprep.common.exception;
 
 import com.sourav.interviewprep.auth.exception.DuplicateEmailException;
 import com.sourav.interviewprep.auth.exception.InvalidTokenException;
+import com.sourav.interviewprep.profile.exception.DuplicateSkillAssignmentException;
+import com.sourav.interviewprep.profile.exception.ProfileNotFoundException;
+import com.sourav.interviewprep.profile.exception.SkillAssignmentNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +30,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateEmailException.class)
     ResponseEntity<ApiErrorResponse> handleDuplicateEmail(DuplicateEmailException exception) {
         return response(HttpStatus.CONFLICT, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(DuplicateSkillAssignmentException.class)
+    ResponseEntity<ApiErrorResponse> handleDuplicateSkill(DuplicateSkillAssignmentException exception) {
+        return response(HttpStatus.CONFLICT, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler({ProfileNotFoundException.class, SkillAssignmentNotFoundException.class})
+    ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException exception) {
+        return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
     }
 
     @ExceptionHandler({InvalidTokenException.class, AuthenticationException.class})
