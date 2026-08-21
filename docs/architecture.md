@@ -22,6 +22,7 @@ flowchart TD
     MOD --> DB[("MySQL 8.4")]
     MOD --> AI["Gemini API"]
     MOD --> FILES["Resume storage"]
+    MOD --> RUNNER["Isolated code runner"]
 ```
 
 The application starts as a modular monolith. Each feature owns its controller, service, repository, entities, and DTOs. This keeps deployment simple while preserving boundaries that can later become independent services.
@@ -69,4 +70,7 @@ com.sourav.interviewprep
 - Resume bytes and extracted text are size-bounded; list/detail APIs expose analysis metadata, not raw text.
 - Resume content and job descriptions are untrusted data inside Gemini prompts.
 - Code execution will run outside the main API process behind a constrained runner interface.
+- Hidden test cases remain server-side and are sent only to the configured runner.
+- The runner must enforce operating-system isolation, resource quotas, outbound-network denial, and per-request timeouts.
+- Runner responses are untrusted and must contain a final verdict, exact test counts, non-negative metrics, and a score from 0 to 100.
 - AI responses are untrusted input and must be schema-validated before persistence.

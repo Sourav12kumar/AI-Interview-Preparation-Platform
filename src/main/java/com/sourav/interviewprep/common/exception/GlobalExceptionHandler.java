@@ -2,6 +2,10 @@ package com.sourav.interviewprep.common.exception;
 
 import com.sourav.interviewprep.auth.exception.DuplicateEmailException;
 import com.sourav.interviewprep.auth.exception.InvalidTokenException;
+import com.sourav.interviewprep.coding.exception.CodeExecutionException;
+import com.sourav.interviewprep.coding.exception.CodeRunnerUnavailableException;
+import com.sourav.interviewprep.coding.exception.CodingProblemNotFoundException;
+import com.sourav.interviewprep.coding.exception.CodingSubmissionNotFoundException;
 import com.sourav.interviewprep.evaluation.exception.DuplicateAnswerException;
 import com.sourav.interviewprep.interview.exception.AiGenerationException;
 import com.sourav.interviewprep.interview.exception.InterviewConfigurationException;
@@ -66,6 +70,11 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
     }
 
+    @ExceptionHandler({CodingProblemNotFoundException.class, CodingSubmissionNotFoundException.class})
+    ResponseEntity<ApiErrorResponse> handleCodingNotFound(RuntimeException exception) {
+        return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
+    }
+
     @ExceptionHandler(InterviewConfigurationException.class)
     ResponseEntity<ApiErrorResponse> handleInterviewConfiguration(InterviewConfigurationException exception) {
         return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
@@ -93,6 +102,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AiGenerationException.class)
     ResponseEntity<ApiErrorResponse> handleAiGeneration(AiGenerationException exception) {
+        return response(HttpStatus.BAD_GATEWAY, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(CodeRunnerUnavailableException.class)
+    ResponseEntity<ApiErrorResponse> handleCodeRunnerUnavailable(CodeRunnerUnavailableException exception) {
+        return response(HttpStatus.SERVICE_UNAVAILABLE, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(CodeExecutionException.class)
+    ResponseEntity<ApiErrorResponse> handleCodeExecution(CodeExecutionException exception) {
         return response(HttpStatus.BAD_GATEWAY, exception.getMessage(), Map.of());
     }
 

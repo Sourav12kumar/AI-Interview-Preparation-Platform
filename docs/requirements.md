@@ -41,6 +41,7 @@ The AI Interview Preparation Platform helps job seekers prepare for technical, H
 | NFR-08 | The backend must provide automated tests and a CI build for every pull request. |
 | NFR-09 | Personally identifiable information and interview content must not appear in application logs. |
 | NFR-10 | The design must support later separation of AI, code-execution, and file-storage services. |
+| NFR-11 | Candidate code must execute only in an isolated runner with CPU, memory, time, process, filesystem, and network restrictions. |
 
 ## 5. MVP scope
 
@@ -52,6 +53,7 @@ The first release includes authentication, profile and skills, resume analysis, 
 - A user can configure a target role and receive a Gemini-generated interview set.
 - Each submitted answer produces numeric scores and actionable feedback.
 - A PDF, DOCX, or TXT resume produces a persisted analysis without exposing the Gemini API key or raw extracted text through APIs.
+- A user can browse active coding problems without receiving hidden tests, submit a supported language to the isolated runner, and access only their own submission history.
 - The dashboard summarizes interview and coding performance from stored results.
 - The application starts with MySQL 8.4 and all Flyway migrations applied.
 - CI builds and tests the application on Java 17.
