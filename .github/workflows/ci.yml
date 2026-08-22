@@ -21,6 +21,15 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: maven
+      - name: Set up Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate frontend JavaScript
+        run: |
+          for script in src/main/resources/static/js/*.js; do
+            node --check "$script"
+          done
       - name: Run tests
         run: mvn --batch-mode --update-snapshots verify
 
