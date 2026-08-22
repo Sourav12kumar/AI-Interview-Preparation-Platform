@@ -75,6 +75,7 @@ app:
     max-file-size: ${RESUME_MAX_FILE_SIZE:5MB}
     max-extracted-characters: ${RESUME_MAX_EXTRACTED_CHARACTERS:100000}
   security:
+    browser-cookie-secure: ${AUTH_COOKIE_SECURE:false}
     jwt:
       issuer: ai-interview-preparation-platform
       secret: ${JWT_SECRET}

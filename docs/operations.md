@@ -14,6 +14,8 @@ curl --fail http://localhost:8080/actuator/health
 
 The application container runs as an unprivileged user with a read-only root filesystem. Only `/tmp` and the resume volume are writable. MySQL and resume volumes require independent encrypted backups.
 
+The web client is served by the same Spring Boot origin. Set `AUTH_COOKIE_SECURE=true` whenever the public site uses HTTPS. Keep it `false` only for plain-HTTP local development; secure cookies are not returned by browsers over HTTP.
+
 ## Administrator bootstrap
 
 Registration grants only `ROLE_USER`. Promote an existing, verified operator directly in MySQL, then log in again so the new access JWT contains the administrator role:

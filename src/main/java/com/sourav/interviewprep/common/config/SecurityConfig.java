@@ -27,13 +27,23 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(
+                                "default-src 'self'; img-src 'self' data:; style-src 'self'; "
+                                        + "script-src 'self'; connect-src 'self'; object-src 'none'; "
+                                        + "base-uri 'self'; frame-ancestors 'none'; form-action 'self'")))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/health", "/actuator/health", "/actuator/health/**").permitAll()
+                        .requestMatchers(
+                                "/", "/login", "/register", "/dashboard",
+                                "/css/**", "/js/**", "/images/**", "/favicon.ico",
+                                "/api/v1/health", "/actuator/health", "/actuator/health/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.POST,
                                 "/api/v1/auth/register",
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
-                                "/api/v1/auth/logout").permitAll()
+                                "/api/v1/auth/logout",
+                                "/api/v1/auth/browser/**").permitAll()
                         .requestMatchers("/api/v1/admin/**", "/actuator/info", "/actuator/prometheus")
                         .hasRole("ADMIN")
                         .anyRequest().authenticated())

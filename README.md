@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Backend MVP complete (Module 9)
+## Current status: Frontend Module 1
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -43,6 +43,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Immutable audit events for privileged mutations
 - Correlation IDs, bounded request rate limiting, and Prometheus metrics
 - Graceful shutdown, health probes, and a hardened non-root Docker image
+- Responsive Thymeleaf landing, registration, login, and dashboard pages
+- Browser-safe refresh-token rotation through an HttpOnly SameSite cookie
+- In-memory access-token handling with automatic session restoration
+- Live analytics summary and topic signals on the dashboard shell
 
 ## Prerequisites
 
@@ -91,6 +95,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 - [Architecture](docs/architecture.md)
 - [Database design](docs/database-design.md)
 - [Operations and deployment](docs/operations.md)
+- [Frontend architecture](docs/frontend.md)
 
 ## Current API
 
@@ -99,11 +104,16 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 | `GET` | `/api/v1/health` | Public | Application health check |
 | `GET` | `/actuator/health` | Public | Infrastructure health check |
 | `GET` | `/actuator/prometheus` | Admin JWT | Prometheus metrics |
+| `GET` | `/`, `/login`, `/register`, `/dashboard` | Public shell | Render responsive web pages; protected data still requires browser authentication |
 | `POST` | `/api/v1/auth/register` | Public | Register and receive a token pair |
 | `POST` | `/api/v1/auth/login` | Public | Authenticate and receive a token pair |
 | `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
 | `POST` | `/api/v1/auth/logout` | Refresh JWT | Revoke the supplied refresh session |
 | `GET` | `/api/v1/auth/me` | Access JWT | Return the authenticated user |
+| `POST` | `/api/v1/auth/browser/register` | Public | Register, return an access token, and set the refresh token as an HttpOnly cookie |
+| `POST` | `/api/v1/auth/browser/login` | Public | Log in through the browser-safe cookie flow |
+| `POST` | `/api/v1/auth/browser/refresh` | Refresh cookie | Rotate the cookie and restore the in-memory browser session |
+| `POST` | `/api/v1/auth/browser/logout` | Refresh cookie | Revoke the session and clear the cookie |
 | `GET` | `/api/v1/profile` | Access JWT | Return the candidate profile aggregate |
 | `PUT` | `/api/v1/profile` | Access JWT | Create or replace profile details and target companies |
 | `DELETE` | `/api/v1/profile` | Access JWT | Delete profile details and assignments |
@@ -141,4 +151,4 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 
 ## Next delivery
 
-The backend MVP is complete. The next major track is a web client, followed by production integrations such as managed object storage, a distributed rate limiter, and an isolated code-runner deployment.
+The next frontend module connects profile and skills management, then interview, resume, coding, and detailed analytics workspaces. Production integrations such as managed object storage, a distributed rate limiter, and an isolated code-runner deployment follow the complete web client.

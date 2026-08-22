@@ -12,6 +12,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-interview_user}
       DB_PASSWORD: ${DB_PASSWORD:-change_me}
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
       CODE_RUNNER_BASE_URL: ${CODE_RUNNER_BASE_URL:-}
