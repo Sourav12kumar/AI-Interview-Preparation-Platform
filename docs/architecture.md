@@ -9,7 +9,7 @@
 | Security | Spring Security, JWT access/refresh tokens, BCrypt/Argon2 |
 | Persistence | Spring Data JPA, MySQL 8.4 LTS, Flyway |
 | AI | Google GenAI Java SDK with Gemini; API key supplied via environment |
-| UI | Thymeleaf and Bootstrap 5 for the first release |
+| UI | Thymeleaf, semantic HTML, CSS, and same-origin JavaScript modules |
 | Testing | JUnit 5, Spring Test, H2 for isolated tests |
 | Delivery | Docker Compose locally and GitHub Actions CI |
 
@@ -62,6 +62,8 @@ com.sourav.interviewprep
 | 9. Admin and hardening | Admin APIs, audit, rate limiting, observability, deployment |
 
 All nine backend modules are implemented. Module 9 adds a dedicated administrator boundary, immutable privileged-operation audit events, request correlation, fixed-window rate limits, Prometheus metrics, health probes, and a non-root container runtime.
+
+The frontend track begins with public landing/authentication pages and an authenticated dashboard shell. Browser refresh tokens are stored only in an HttpOnly SameSite cookie. JavaScript keeps the short-lived access token in memory, restores it through cookie-backed rotation after reload, and never writes either token to local storage.
 
 ## Security boundaries
 

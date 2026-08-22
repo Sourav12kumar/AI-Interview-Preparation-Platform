@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/auth-page.js"></script>
+</head>
+<body class="auth-body">
+<main class="auth-layout">
+    <section class="auth-story">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <div class="auth-quote">
+            <p class="eyebrow">Continue your progress</p>
+            <blockquote>“Confidence is built one deliberate practice session at a time.”</blockquote>
+            <div class="auth-proof">
+                <div><strong>Private</strong><span>Secure session rotation</span></div>
+                <div><strong>Focused</strong><span>Evidence-based next steps</span></div>
+            </div>
+        </div>
+    </section>
+    <section class="auth-panel">
+        <div class="auth-card">
+            <a class="mobile-brand brand" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+            <p class="eyebrow">Welcome back</p>
+            <h1>Log in to your workspace.</h1>
+            <p class="auth-intro">Pick up exactly where your last practice session ended.</p>
+            <div class="form-alert" id="form-alert" role="alert" hidden></div>
+            <form id="auth-form" data-mode="login" novalidate>
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" autocomplete="email" maxlength="190" placeholder="you@example.com" required>
+                <span class="field-error" data-error-for="email"></span>
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="72" placeholder="Your password" required>
+                <span class="field-error" data-error-for="password"></span>
+
+                <button class="button button-primary button-submit" type="submit">
+                    <span>Log in</span><span aria-hidden="true">→</span>
+                </button>
+            </form>
+            <p class="auth-switch">New to InterviewPilot? <a href="/register">Create an account</a></p>
+            <p class="auth-security">Your refresh credential is protected in an HttpOnly cookie and is never exposed to page scripts.</p>
+        </div>
+    </section>
+</main>
+</body>
+</html>
