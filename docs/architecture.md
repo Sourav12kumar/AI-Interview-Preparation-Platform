@@ -73,4 +73,7 @@ com.sourav.interviewprep
 - Hidden test cases remain server-side and are sent only to the configured runner.
 - The runner must enforce operating-system isolation, resource quotas, outbound-network denial, and per-request timeouts.
 - Runner responses are untrusted and must contain a final verdict, exact test counts, non-negative metrics, and a score from 0 to 100.
+- Analytics aggregates only owned interview evaluations and coding submissions inside a validated UTC date range.
+- Gemini performance advice receives aggregate scores and topic labels only, not resumes, answers, source code, or profile details.
+- Saved performance reports are user-owned snapshots and may be refreshed for the same date range.
 - AI responses are untrusted input and must be schema-validated before persistence.

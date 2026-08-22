@@ -54,6 +54,7 @@ The first release includes authentication, profile and skills, resume analysis, 
 - Each submitted answer produces numeric scores and actionable feedback.
 - A PDF, DOCX, or TXT resume produces a persisted analysis without exposing the Gemini API key or raw extracted text through APIs.
 - A user can browse active coding problems without receiving hidden tests, submit a supported language to the isolated runner, and access only their own submission history.
+- A user can view date-range interview and coding trends, identify stronger and weaker topics, and save Gemini-generated recommendations without exposing raw practice content to the recommendation prompt.
 - The dashboard summarizes interview and coding performance from stored results.
 - The application starts with MySQL 8.4 and all Flyway migrations applied.
 - CI builds and tests the application on Java 17.

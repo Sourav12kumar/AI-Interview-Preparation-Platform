@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 
@@ -38,6 +40,7 @@ public class InterviewQuestionEntity {
     @Column(nullable = false, length = 20)
     private Difficulty difficulty;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "expected_topics", columnDefinition = "JSON")
     private String expectedTopicsJson;
 
