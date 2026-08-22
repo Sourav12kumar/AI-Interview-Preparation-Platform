@@ -45,6 +45,12 @@ gemini:
   model: ${GEMINI_MODEL:gemini-2.5-flash}
 
 app:
+  coding:
+    runner:
+      base-url: ${CODE_RUNNER_BASE_URL:}
+      api-key: ${CODE_RUNNER_API_KEY:}
+      connect-timeout: ${CODE_RUNNER_CONNECT_TIMEOUT:PT3S}
+      request-timeout: ${CODE_RUNNER_REQUEST_TIMEOUT:PT10S}
   resume:
     storage-dir: ${RESUME_STORAGE_DIR:./data/resumes}
     max-file-size: ${RESUME_MAX_FILE_SIZE:5MB}

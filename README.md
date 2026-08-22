@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 6
+## Current status: Module 7
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -31,6 +31,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Apache Tika content detection and bounded text extraction
 - Gemini-powered ATS score, keyword gap, strengths, weaknesses, and suggestions
 - User-owned resume history, reanalysis, and deletion
+- Authenticated coding-problem catalogue with difficulty and tag filters
+- Starter code for Java, Python, JavaScript, and C++ without exposing hidden tests
+- User-owned code submissions, verdicts, metrics, scores, and history
+- Remote-only code-runner boundary with timeouts and response validation
 
 ## Prerequisites
 
@@ -67,7 +71,9 @@ Expected response:
 }
 ```
 
-Gemini powers interview generation, answer evaluation, and resume analysis. Keep `GEMINI_API_KEY` and `JWT_SECRET` outside source control; `.env` is ignored by Git. Resume files are stored under `RESUME_STORAGE_DIR` (default `./data/resumes`) and this directory must be private in production.
+Gemini powers interview generation, answer evaluation, and resume analysis. Keep `GEMINI_API_KEY`, `JWT_SECRET`, and `CODE_RUNNER_API_KEY` outside source control; `.env` is ignored by Git. Resume files are stored under `RESUME_STORAGE_DIR` (default `./data/resumes`) and this directory must be private in production.
+
+Code submissions are never executed by the Spring Boot process. Configure `CODE_RUNNER_BASE_URL` to an isolated runner that accepts `POST /v1/execute`; for local development the example URL is `http://localhost:8090`. The runner receives the problem slug, language, source, hidden test cases, and resource limits, then returns a final verdict, test counts, execution time, memory, score, and a safe result message.
 
 ## Documentation
 
@@ -103,7 +109,12 @@ Gemini powers interview generation, answer evaluation, and resume analysis. Keep
 | `GET` | `/api/v1/resumes` | Access JWT | List the candidate's resume history |
 | `GET` | `/api/v1/resumes/{resumeId}` | Access JWT | Return one owned resume and its analysis |
 | `DELETE` | `/api/v1/resumes/{resumeId}` | Access JWT | Delete owned resume metadata and private file |
+| `GET` | `/api/v1/coding/problems` | Access JWT | List active problems; optionally filter by `difficulty` and `tag` |
+| `GET` | `/api/v1/coding/problems/{problemId}` | Access JWT | Return a problem and starter code without hidden tests |
+| `POST` | `/api/v1/coding/problems/{problemId}/submissions` | Access JWT | Execute code through the isolated runner and persist the result |
+| `GET` | `/api/v1/coding/submissions` | Access JWT | List the candidate's submission history |
+| `GET` | `/api/v1/coding/submissions/{submissionId}` | Access JWT | Return one owned submission and result |
 
 ## Roadmap
 
-The next module adds coding-problem catalogue APIs, submissions, and an isolated runner interface.
+The next module adds analytics summaries, score trends, weak-topic insights, and Gemini recommendations.

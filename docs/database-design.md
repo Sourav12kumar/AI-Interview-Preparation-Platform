@@ -30,8 +30,8 @@ erDiagram
 | `interview_questions` | Ordered generated or curated questions |
 | `interview_answers` | Candidate response and response time |
 | `answer_evaluations` | Gemini scores, feedback and ideal answer |
-| `coding_problems` | Problem statement, starter code and test cases |
-| `coding_submissions` | Source, verdict, performance and score |
+| `coding_problems` | Problem statement, per-language starter code, tags, and server-only test cases |
+| `coding_submissions` | Owned source, final verdict, test counts, performance, score, and safe runner message |
 | `performance_reports` | Periodic aggregate scores and AI recommendations |
 
 ## Design decisions
@@ -43,5 +43,7 @@ erDiagram
 - Scores use `DECIMAL(5,2)` to avoid floating-point rounding surprises.
 - Times are persisted in UTC with microsecond precision.
 - Flyway owns the schema; JPA uses `ddl-auto=validate` outside tests.
+- Coding problems are soft-published with `active`; hidden `test_cases` are never represented in API response DTOs.
+- Coding submission metrics and scores have database constraints in addition to runner-response validation.
 
 The executable design is the ordered Flyway migration set under `src/main/resources/db/migration`.
