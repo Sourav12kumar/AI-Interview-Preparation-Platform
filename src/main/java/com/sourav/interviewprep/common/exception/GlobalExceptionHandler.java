@@ -2,6 +2,8 @@ package com.sourav.interviewprep.common.exception;
 
 import com.sourav.interviewprep.analytics.exception.AnalyticsConfigurationException;
 import com.sourav.interviewprep.analytics.exception.PerformanceReportNotFoundException;
+import com.sourav.interviewprep.admin.exception.AdminOperationException;
+import com.sourav.interviewprep.admin.exception.DuplicateCodingProblemException;
 import com.sourav.interviewprep.auth.exception.DuplicateEmailException;
 import com.sourav.interviewprep.auth.exception.InvalidTokenException;
 import com.sourav.interviewprep.coding.exception.CodeExecutionException;
@@ -57,6 +59,12 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.CONFLICT, exception.getMessage(), Map.of());
     }
 
+    @ExceptionHandler(DuplicateCodingProblemException.class)
+    ResponseEntity<ApiErrorResponse> handleDuplicateCodingProblem(
+            DuplicateCodingProblemException exception) {
+        return response(HttpStatus.CONFLICT, exception.getMessage(), Map.of());
+    }
+
     @ExceptionHandler({ProfileNotFoundException.class, SkillAssignmentNotFoundException.class})
     ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException exception) {
         return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
@@ -91,6 +99,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AnalyticsConfigurationException.class)
     ResponseEntity<ApiErrorResponse> handleAnalyticsConfiguration(
             AnalyticsConfigurationException exception) {
+        return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(AdminOperationException.class)
+    ResponseEntity<ApiErrorResponse> handleAdminOperation(AdminOperationException exception) {
         return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
     }
 

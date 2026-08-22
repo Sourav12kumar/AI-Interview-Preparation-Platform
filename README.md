@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 8
+## Current status: Backend MVP complete (Module 9)
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -39,6 +39,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Daily score trends, acceptance rate, strongest topics, and improvement topics
 - User-owned persisted performance-report history
 - Gemini-powered coaching summaries and bounded next-step recommendations
+- Administrator-only user status and coding-problem management APIs
+- Immutable audit events for privileged mutations
+- Correlation IDs, bounded request rate limiting, and Prometheus metrics
+- Graceful shutdown, health probes, and a hardened non-root Docker image
 
 ## Prerequisites
 
@@ -64,6 +68,8 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 
 5. Open `http://localhost:8080/api/v1/health`.
 
+To run the complete stack in containers, set `JWT_SECRET` and other required values in `.env`, then run `docker compose up --build`.
+
 Expected response:
 
 ```json
@@ -84,6 +90,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 - [Requirements](docs/requirements.md)
 - [Architecture](docs/architecture.md)
 - [Database design](docs/database-design.md)
+- [Operations and deployment](docs/operations.md)
 
 ## Current API
 
@@ -91,6 +98,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 |---|---|---|---|
 | `GET` | `/api/v1/health` | Public | Application health check |
 | `GET` | `/actuator/health` | Public | Infrastructure health check |
+| `GET` | `/actuator/prometheus` | Admin JWT | Prometheus metrics |
 | `POST` | `/api/v1/auth/register` | Public | Register and receive a token pair |
 | `POST` | `/api/v1/auth/login` | Public | Authenticate and receive a token pair |
 | `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
@@ -122,7 +130,15 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 | `POST` | `/api/v1/analytics/reports` | Access JWT | Generate or refresh a Gemini performance report for a date range |
 | `GET` | `/api/v1/analytics/reports` | Access JWT | List the candidate's saved performance reports |
 | `GET` | `/api/v1/analytics/reports/{reportId}` | Access JWT | Return one owned performance report |
+| `GET` | `/api/v1/admin/overview` | Admin JWT | Return platform counts |
+| `GET` | `/api/v1/admin/users` | Admin JWT | Search and filter users |
+| `PATCH` | `/api/v1/admin/users/{userId}/status` | Admin JWT | Activate or suspend a user |
+| `GET` | `/api/v1/admin/coding/problems` | Admin JWT | List all active and inactive problems including hidden tests |
+| `POST` | `/api/v1/admin/coding/problems` | Admin JWT | Create a coding problem |
+| `PUT` | `/api/v1/admin/coding/problems/{problemId}` | Admin JWT | Replace a coding problem |
+| `DELETE` | `/api/v1/admin/coding/problems/{problemId}` | Admin JWT | Soft-deactivate a coding problem |
+| `GET` | `/api/v1/admin/audit-events` | Admin JWT | Read newest privileged audit events |
 
-## Roadmap
+## Next delivery
 
-The next module adds administrator APIs, audit controls, rate limiting, observability, and deployment hardening.
+The backend MVP is complete. The next major track is a web client, followed by production integrations such as managed object storage, a distributed rate limiter, and an isolated code-runner deployment.

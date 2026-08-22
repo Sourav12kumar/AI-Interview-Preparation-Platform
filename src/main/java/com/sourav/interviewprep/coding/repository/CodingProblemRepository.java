@@ -9,4 +9,8 @@ import java.util.Optional;
 public interface CodingProblemRepository extends JpaRepository<CodingProblemEntity, Long> {
     List<CodingProblemEntity> findAllByActiveTrueOrderByDifficultyAscTitleAsc();
     Optional<CodingProblemEntity> findByIdAndActiveTrue(Long id);
+    List<CodingProblemEntity> findAllByOrderByCreatedAtDesc();
+    boolean existsBySlugIgnoreCase(String slug);
+    boolean existsBySlugIgnoreCaseAndIdNot(String slug, Long id);
+    long countByActiveTrue();
 }

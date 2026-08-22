@@ -102,4 +102,27 @@ public class CodingProblemEntity {
     public boolean isActive() { return active; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
+
+    public void update(
+            String title,
+            String slug,
+            String description,
+            CodingDifficulty difficulty,
+            String starterCode,
+            String testCases,
+            String tags,
+            boolean active) {
+        this.title = title;
+        this.slug = slug;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.starterCode = starterCode;
+        this.testCases = testCases;
+        this.tags = tags;
+        this.active = active;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
 }

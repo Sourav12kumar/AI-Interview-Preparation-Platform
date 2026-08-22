@@ -61,6 +61,8 @@ com.sourav.interviewprep
 | 8. Analytics | Dashboard summaries, trends, recommendations |
 | 9. Admin and hardening | Admin APIs, audit, rate limiting, observability, deployment |
 
+All nine backend modules are implemented. Module 9 adds a dedicated administrator boundary, immutable privileged-operation audit events, request correlation, fixed-window rate limits, Prometheus metrics, health probes, and a non-root container runtime.
+
 ## Security boundaries
 
 - Browsers never receive the Gemini key or database credentials.
@@ -77,3 +79,8 @@ com.sourav.interviewprep
 - Gemini performance advice receives aggregate scores and topic labels only, not resumes, answers, source code, or profile details.
 - Saved performance reports are user-owned snapshots and may be refreshed for the same date range.
 - AI responses are untrusted input and must be schema-validated before persistence.
+- Only access tokens containing `ROLE_ADMIN` can reach administrator or Prometheus routes.
+- User suspension revokes all active refresh sessions. Already-issued access JWTs remain valid only for their configured short lifetime.
+- Coding-problem deletion is a soft deactivation so historical submissions keep valid foreign keys.
+- Rate-limit keys are bounded in memory. Multi-instance production deployments must enforce a shared limit at the gateway or replace the local store with Redis.
+- Every response carries a safe correlation identifier, which is included in administrator audit events without logging request bodies or personal data.

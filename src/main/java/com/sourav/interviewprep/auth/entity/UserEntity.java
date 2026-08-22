@@ -131,4 +131,12 @@ public class UserEntity {
     public boolean isActive() {
         return accountStatus == AccountStatus.ACTIVE;
     }
+
+    public void changeStatus(AccountStatus status) {
+        this.accountStatus = status;
+    }
+
+    public void addRole(RoleEntity role) {
+        this.roles.add(role);
+    }
 }

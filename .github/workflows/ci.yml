@@ -23,3 +23,12 @@ jobs:
           cache: maven
       - name: Run tests
         run: mvn --batch-mode --update-snapshots verify
+
+  container:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Build production container
+        run: docker build --tag ai-interview-preparation-platform:${{ github.sha }} .
