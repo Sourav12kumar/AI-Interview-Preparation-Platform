@@ -1,5 +1,7 @@
 package com.sourav.interviewprep.common.exception;
 
+import com.sourav.interviewprep.analytics.exception.AnalyticsConfigurationException;
+import com.sourav.interviewprep.analytics.exception.PerformanceReportNotFoundException;
 import com.sourav.interviewprep.auth.exception.DuplicateEmailException;
 import com.sourav.interviewprep.auth.exception.InvalidTokenException;
 import com.sourav.interviewprep.coding.exception.CodeExecutionException;
@@ -75,8 +77,20 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
     }
 
+    @ExceptionHandler(PerformanceReportNotFoundException.class)
+    ResponseEntity<ApiErrorResponse> handlePerformanceReportNotFound(
+            PerformanceReportNotFoundException exception) {
+        return response(HttpStatus.NOT_FOUND, exception.getMessage(), Map.of());
+    }
+
     @ExceptionHandler(InterviewConfigurationException.class)
     ResponseEntity<ApiErrorResponse> handleInterviewConfiguration(InterviewConfigurationException exception) {
+        return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(AnalyticsConfigurationException.class)
+    ResponseEntity<ApiErrorResponse> handleAnalyticsConfiguration(
+            AnalyticsConfigurationException exception) {
         return response(HttpStatus.BAD_REQUEST, exception.getMessage(), Map.of());
     }
 

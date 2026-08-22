@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Module 7
+## Current status: Module 8
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -35,6 +35,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Starter code for Java, Python, JavaScript, and C++ without exposing hidden tests
 - User-owned code submissions, verdicts, metrics, scores, and history
 - Remote-only code-runner boundary with timeouts and response validation
+- Date-range analytics dashboard for interview and coding activity
+- Daily score trends, acceptance rate, strongest topics, and improvement topics
+- User-owned persisted performance-report history
+- Gemini-powered coaching summaries and bounded next-step recommendations
 
 ## Prerequisites
 
@@ -71,7 +75,7 @@ Expected response:
 }
 ```
 
-Gemini powers interview generation, answer evaluation, and resume analysis. Keep `GEMINI_API_KEY`, `JWT_SECRET`, and `CODE_RUNNER_API_KEY` outside source control; `.env` is ignored by Git. Resume files are stored under `RESUME_STORAGE_DIR` (default `./data/resumes`) and this directory must be private in production.
+Gemini powers interview generation, answer evaluation, resume analysis, and performance recommendations. Keep `GEMINI_API_KEY`, `JWT_SECRET`, and `CODE_RUNNER_API_KEY` outside source control; `.env` is ignored by Git. Resume files are stored under `RESUME_STORAGE_DIR` (default `./data/resumes`) and this directory must be private in production.
 
 Code submissions are never executed by the Spring Boot process. Configure `CODE_RUNNER_BASE_URL` to an isolated runner that accepts `POST /v1/execute`; for local development the example URL is `http://localhost:8090`. The runner receives the problem slug, language, source, hidden test cases, and resource limits, then returns a final verdict, test counts, execution time, memory, score, and a safe result message.
 
@@ -114,7 +118,11 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 | `POST` | `/api/v1/coding/problems/{problemId}/submissions` | Access JWT | Execute code through the isolated runner and persist the result |
 | `GET` | `/api/v1/coding/submissions` | Access JWT | List the candidate's submission history |
 | `GET` | `/api/v1/coding/submissions/{submissionId}` | Access JWT | Return one owned submission and result |
+| `GET` | `/api/v1/analytics/dashboard` | Access JWT | Return summaries, trends, and topic performance for an optional `from`/`to` date range |
+| `POST` | `/api/v1/analytics/reports` | Access JWT | Generate or refresh a Gemini performance report for a date range |
+| `GET` | `/api/v1/analytics/reports` | Access JWT | List the candidate's saved performance reports |
+| `GET` | `/api/v1/analytics/reports/{reportId}` | Access JWT | Return one owned performance report |
 
 ## Roadmap
 
-The next module adds analytics summaries, score trends, weak-topic insights, and Gemini recommendations.
+The next module adds administrator APIs, audit controls, rate limiting, observability, and deployment hardening.
