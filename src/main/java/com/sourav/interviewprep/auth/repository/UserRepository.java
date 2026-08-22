@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmailIgnoreCase(String email);
     boolean existsByEmailIgnoreCase(String email);
+    long countByAccountStatus(com.sourav.interviewprep.auth.entity.AccountStatus accountStatus);
 }
