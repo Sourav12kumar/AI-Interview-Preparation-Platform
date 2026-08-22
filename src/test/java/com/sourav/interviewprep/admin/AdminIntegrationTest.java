@@ -91,7 +91,7 @@ class AdminIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"status\":\"SUSPENDED\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accountStatus").value("SUSPENDED"));
+                .andExpect(jsonPath("$.status").value("SUSPENDED"));
 
         mockMvc.perform(post("/api/v1/auth/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
