@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Frontend Module 1
+## Current status: Frontend Module 2
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -47,6 +47,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Browser-safe refresh-token rotation through an HttpOnly SameSite cookie
 - In-memory access-token handling with automatic session restoration
 - Live analytics summary and topic signals on the dashboard shell
+- Candidate profile workspace with professional, education, experience, and career-target fields
+- Target-company chip management with duplicate and maximum-count safeguards
+- Skill inventory with proficiency, years used, create, update, and remove flows
+- Profile completion guidance, empty states, validation feedback, and protected deletion
 
 ## Prerequisites
 
@@ -104,7 +108,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 | `GET` | `/api/v1/health` | Public | Application health check |
 | `GET` | `/actuator/health` | Public | Infrastructure health check |
 | `GET` | `/actuator/prometheus` | Admin JWT | Prometheus metrics |
-| `GET` | `/`, `/login`, `/register`, `/dashboard` | Public shell | Render responsive web pages; protected data still requires browser authentication |
+| `GET` | `/`, `/login`, `/register`, `/dashboard`, `/profile` | Public shell | Render responsive web pages; protected data still requires browser authentication |
 | `POST` | `/api/v1/auth/register` | Public | Register and receive a token pair |
 | `POST` | `/api/v1/auth/login` | Public | Authenticate and receive a token pair |
 | `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
@@ -151,4 +155,4 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 
 ## Next delivery
 
-The next frontend module connects profile and skills management, then interview, resume, coding, and detailed analytics workspaces. Production integrations such as managed object storage, a distributed rate limiter, and an isolated code-runner deployment follow the complete web client.
+The next frontend module builds the mock-interview workspace: interview configuration, Gemini question generation, guided answer submission, evaluation feedback, and session history. Resume, coding, detailed analytics, and admin workspaces follow.

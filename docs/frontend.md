@@ -2,14 +2,14 @@
 
 ## Delivery plan
 
-| Module | User-facing scope |
-|---|---|
-| 1. Foundation and auth | Landing page, registration, login, secure refresh cookie, dashboard shell |
-| 2. Candidate profile | Profile details, target companies, skills, education, and experience |
-| 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation |
-| 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions |
-| 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history |
-| 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history |
+| Module | User-facing scope | Status |
+|---|---|---|
+| 1. Foundation and auth | Landing page, registration, login, secure refresh cookie, dashboard shell | Complete |
+| 2. Candidate profile | Profile details, target companies, skills, education, and experience | Complete |
+| 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation | Next |
+| 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Planned |
+| 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Planned |
+| 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Planned |
 
 ## Browser authentication
 
@@ -32,6 +32,19 @@ The content security policy allows resources and API connections only from the s
 - Layouts begin mobile-responsive and use system fonts, semantic landmarks, labels, and visible validation feedback.
 - Shared colors, spacing, buttons, cards, navigation, and form states are defined in `static/css/app.css`.
 
-## Current integration
+## Dashboard integration
 
 The dashboard restores the secure browser session and loads `/api/v1/analytics/dashboard`. Summary cards show interview score, coding score, completed interviews, submissions, acceptance rate, and strong/improvement topics. Practice links are visual entry points that the next modules will connect to full workspaces.
+
+## Profile integration
+
+The candidate profile page uses the same in-memory access-token client and integrates directly with `/api/v1/profile` and `/api/v1/profile/skills`.
+
+- Professional identity includes headline, private phone/location fields, and a bounded summary.
+- Education and experience include education level, institution, graduation year, and years of experience.
+- Career targeting includes a target role and up to 20 case-insensitively unique companies.
+- Skill assignments support add, update, and remove operations with category, proficiency, and years used.
+- A completion score is calculated locally from filled sections and is never treated as an employment or personality assessment.
+- Profile deletion requires an explicit confirmation and removes profile fields, target companies, and skill assignments without deleting the account.
+
+All API-originated content is rendered using safe DOM text nodes. Validation errors are mapped to their fields, and destructive operations preserve clear scope and confirmation.

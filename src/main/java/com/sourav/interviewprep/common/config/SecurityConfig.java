@@ -34,7 +34,7 @@ public class SecurityConfig {
                                         + "base-uri 'self'; frame-ancestors 'none'; form-action 'self'")))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/", "/login", "/register", "/dashboard",
+                                "/", "/login", "/register", "/dashboard", "/profile",
                                 "/css/**", "/js/**", "/images/**", "/favicon.ico",
                                 "/api/v1/health", "/actuator/health", "/actuator/health/**")
                         .permitAll()

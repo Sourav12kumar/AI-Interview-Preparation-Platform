@@ -25,4 +25,9 @@ public class PageController {
     String dashboard() {
         return "dashboard";
     }
+
+    @GetMapping("/profile")
+    String profile() {
+        return "profile";
+    }
 }
