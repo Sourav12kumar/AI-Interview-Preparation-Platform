@@ -114,3 +114,9 @@ The administration shell checks the browser user role for a clear user experienc
 - The audit view displays immutable actor, action, target, outcome, correlation ID, metadata, and timestamp fields using safe text nodes.
 
 Privileged and destructive actions require explicit confirmation. Administrator mutations refresh overview and audit information without modifying historical events in the browser.
+
+## Browser release gate
+
+Playwright runs the critical Chromium journey against the packaged application and MySQL rather than mocked API responses. It covers anonymous workspace redirection, registration, session restoration, profile persistence, logout, and a fresh login. Axe scans the landing, authentication, dashboard, and profile states against WCAG 2/2.1 A and AA rules.
+
+The suite deliberately avoids Gemini calls and code execution so pull-request validation is deterministic and does not require production credentials. Run it with `npm run test:e2e` after the application is healthy at `E2E_BASE_URL` (default `http://127.0.0.1:8080`). GitHub Actions retains traces, screenshots, videos, the HTML report, and the Spring Boot log when a browser test fails.
