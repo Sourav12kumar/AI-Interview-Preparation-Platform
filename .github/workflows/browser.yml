@@ -1,0 +1,87 @@
+name: Browser Release Gate
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: ai_interview_prep
+          MYSQL_USER: interview_user
+          MYSQL_PASSWORD: e2e_password
+          MYSQL_ROOT_PASSWORD: e2e_root_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pe2e_root_password --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    env:
+      DB_URL: "jdbc:mysql://127.0.0.1:3306/ai_interview_prep?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+      DB_USERNAME: interview_user
+      DB_PASSWORD: e2e_password
+      JWT_SECRET: e2e-only-jwt-secret-not-valid-for-production-2026
+      AUTH_COOKIE_SECURE: "false"
+      RATE_LIMIT_ENABLED: "false"
+      RESUME_STORAGE_DIR: /tmp/interview-pilot-e2e-resumes
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Set up Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install browser-test dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Package application
+        run: mvn --batch-mode -DskipTests package
+      - name: Start application
+        run: |
+          mkdir -p "$RESUME_STORAGE_DIR"
+          java -jar target/*.jar > application-e2e.log 2>&1 &
+          echo $! > application-e2e.pid
+          for attempt in {1..60}; do
+            if curl --silent --fail http://127.0.0.1:8080/actuator/health > /dev/null; then
+              exit 0
+            fi
+            if ! kill -0 "$(cat application-e2e.pid)" 2>/dev/null; then
+              cat application-e2e.log
+              exit 1
+            fi
+            sleep 2
+          done
+          cat application-e2e.log
+          exit 1
+      - name: Run end-to-end and accessibility tests
+        run: npm run test:e2e
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-test-failure-${{ github.run_id }}
+          path: |
+            application-e2e.log
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14

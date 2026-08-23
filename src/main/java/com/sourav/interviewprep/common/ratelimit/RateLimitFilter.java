@@ -1,6 +1,7 @@
 package com.sourav.interviewprep.common.ratelimit;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private final Clock clock;
     private final Map<String, WindowEntry> counters = new ConcurrentHashMap<>();
 
+    @Autowired
     public RateLimitFilter(
             RateLimitProperties properties,
             MeterRegistry meterRegistry,
