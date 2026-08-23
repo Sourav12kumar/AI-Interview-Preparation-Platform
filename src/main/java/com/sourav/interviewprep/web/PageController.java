@@ -45,4 +45,14 @@ public class PageController {
     String resumes() {
         return "resumes";
     }
+
+    @GetMapping("/coding")
+    String coding() {
+        return "coding";
+    }
+
+    @GetMapping("/coding/{problemId}")
+    String codingProblem() {
+        return "coding-problem";
+    }
 }

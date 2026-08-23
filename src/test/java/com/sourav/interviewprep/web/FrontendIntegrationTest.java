@@ -97,6 +97,17 @@ class FrontendIntegrationTest {
         mockMvc.perform(get("/js/resumes.js"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("/api/v1/resumes")));
+        mockMvc.perform(get("/coding"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("coding"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Coding workspace")));
+        mockMvc.perform(get("/coding/7"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("coding-problem"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Solution editor")));
+        mockMvc.perform(get("/js/coding-problem.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("/submissions")));
     }
 
     @Test
