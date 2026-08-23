@@ -2,6 +2,17 @@ import AxeBuilder from "@axe-core/playwright";
 import {expect, test} from "@playwright/test";
 
 const wcagTags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
+const pageErrors = new WeakMap();
+
+test.beforeEach(async ({page}) => {
+    const errors = [];
+    pageErrors.set(page, errors);
+    page.on("pageerror", error => errors.push(error.message));
+});
+
+test.afterEach(async ({page}) => {
+    expect(pageErrors.get(page), "The browser page emitted uncaught JavaScript errors").toEqual([]);
+});
 
 async function expectAccessible(page) {
     const scan = await new AxeBuilder({page}).withTags(wcagTags).analyze();

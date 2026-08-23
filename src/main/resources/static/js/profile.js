@@ -332,7 +332,9 @@ function updateCompletion() {
     const percentage = Math.round((completed / (fields.length + 2)) * 100);
     document.querySelector("#completion-value").textContent = `${percentage}%`;
     const ring = document.querySelector(".completion-ring");
-    [...ring.classList].filter(name => name.startsWith("completion-")).forEach(name => ring.classList.remove(name));
+    [...ring.classList]
+        .filter(name => /^completion-\d+$/.test(name))
+        .forEach(name => ring.classList.remove(name));
     ring.classList.add(`completion-${Math.round(percentage / 10) * 10}`);
     document.querySelector("#completion-message").textContent = percentage >= 80 ? "Strong practice context" : percentage >= 45 ? "Good progress—keep going" : "Add more detail for better practice";
 }
