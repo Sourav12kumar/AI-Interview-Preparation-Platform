@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mock interviews — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/interviews.js"></script>
+</head>
+<body class="dashboard-body">
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <nav class="side-nav" aria-label="Workspace navigation">
+            <a href="/dashboard"><span>⌂</span> Overview</a>
+            <a href="/profile"><span>◇</span> Candidate profile</a>
+            <a class="active" href="/interviews"><span>◎</span> Mock interviews</a>
+            <a href="/dashboard#practice"><span>⌁</span> Resume analysis</a>
+            <a href="/dashboard#practice"><span>⌘</span> Coding practice</a>
+            <a href="/dashboard#insights"><span>↗</span> Analytics</a>
+        </nav>
+        <div class="sidebar-foot">
+            <p>Gemini uses your profile context without exposing your credentials.</p>
+            <a class="button button-light" href="/profile">Review profile</a>
+            <button id="logout-button" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main interviews-main">
+        <header class="dashboard-header interviews-header">
+            <button class="menu-button" id="menu-button" type="button" aria-label="Toggle navigation">☰</button>
+            <div><p class="eyebrow">Mock interview studio</p><h1>Practise with <span>purpose.</span></h1><p class="page-intro">Configure a focused session, answer one question at a time, and turn Gemini feedback into your next improvement.</p></div>
+            <button class="button button-primary button-large" id="new-interview-button" type="button">New interview</button>
+        </header>
+
+        <div class="dashboard-loading" id="interviews-loading">Restoring your secure session…</div>
+        <div class="dashboard-error" id="interviews-error" hidden><strong>We could not load your interview history.</strong><span>Please refresh or log in again.</span></div>
+
+        <div id="interviews-content" hidden>
+            <section class="interview-stats" aria-label="Interview history summary">
+                <article><span>Total sessions</span><strong id="total-sessions">0</strong></article>
+                <article><span>Completed</span><strong id="completed-sessions">0</strong></article>
+                <article><span>Best score</span><strong id="best-score">—</strong></article>
+                <article><span>In progress</span><strong id="active-sessions">0</strong></article>
+            </section>
+
+            <section class="panel interview-history-panel">
+                <div class="section-title-row history-title-row">
+                    <div><span class="section-index">01</span><div><p class="eyebrow">Session history</p><h2>Your interview practice</h2></div></div>
+                    <div class="history-filters" role="group" aria-label="Filter sessions">
+                        <button class="active" data-filter="ALL" type="button">All</button>
+                        <button data-filter="IN_PROGRESS" type="button">In progress</button>
+                        <button data-filter="COMPLETED" type="button">Completed</button>
+                    </div>
+                </div>
+                <div class="session-list" id="session-list"></div>
+            </section>
+
+            <section class="interview-guidance">
+                <div><span>01</span><strong>Use a real target role</strong><p>Specific context produces more useful questions.</p></div>
+                <div><span>02</span><strong>Answer before viewing feedback</strong><p>Practise recall instead of recognition.</p></div>
+                <div><span>03</span><strong>Review improvement themes</strong><p>Repeat weak topics in your next session.</p></div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<dialog class="app-dialog interview-dialog" id="interview-dialog">
+    <form id="interview-form" method="dialog" novalidate>
+        <div class="dialog-head"><div><p class="eyebrow">New practice session</p><h2>Configure your interview</h2></div><button class="dialog-close" id="close-interview-dialog" type="button" aria-label="Close">×</button></div>
+        <div class="field">
+            <label for="interview-target-role">Target role</label>
+            <input id="interview-target-role" maxlength="120" placeholder="Use profile target role when left blank">
+            <small>Leave blank to use the role saved in your candidate profile.</small>
+            <span class="field-error" data-interview-error="targetRole"></span>
+        </div>
+        <fieldset class="choice-fieldset">
+            <legend>Interview type</legend>
+            <div class="choice-grid type-choice-grid">
+                <label><input type="radio" name="interviewType" value="TECHNICAL" checked><span><b>Technical</b><small>Concepts and engineering decisions</small></span></label>
+                <label><input type="radio" name="interviewType" value="HR"><span><b>HR</b><small>Motivation and workplace fit</small></span></label>
+                <label><input type="radio" name="interviewType" value="BEHAVIORAL"><span><b>Behavioral</b><small>Experience and situational stories</small></span></label>
+                <label><input type="radio" name="interviewType" value="MIXED"><span><b>Mixed</b><small>A balanced interview round</small></span></label>
+            </div>
+        </fieldset>
+        <fieldset class="choice-fieldset">
+            <legend>Difficulty</legend>
+            <div class="segmented-control">
+                <label><input type="radio" name="difficulty" value="EASY"><span>Easy</span></label>
+                <label><input type="radio" name="difficulty" value="MEDIUM" checked><span>Medium</span></label>
+                <label><input type="radio" name="difficulty" value="HARD"><span>Hard</span></label>
+            </div>
+        </fieldset>
+        <div class="question-count-field">
+            <div><label for="question-count">Number of questions</label><output id="question-count-output" for="question-count">5</output></div>
+            <input id="question-count" type="range" min="1" max="10" value="5">
+            <div class="range-labels"><span>Quick · 1</span><span>Deep · 10</span></div>
+        </div>
+        <div class="generation-note"><span>✦</span><p><strong>Gemini generation</strong> can take several seconds. Keep this window open while questions are prepared.</p></div>
+        <div class="form-alert" id="interview-form-alert" role="alert" hidden></div>
+        <div class="dialog-actions"><button class="button button-ghost" id="cancel-interview" type="button">Cancel</button><button class="button button-primary" id="generate-interview" type="submit">Generate questions</button></div>
+    </form>
+</dialog>
+
+<div class="generation-overlay" id="generation-overlay" hidden>
+    <div class="generation-card"><span class="ai-loader">✦</span><p class="eyebrow">Gemini is preparing your session</p><h2>Creating focused interview questions…</h2><p>Using your role, profile, skills, and selected difficulty.</p></div>
+</div>
+
+<div class="toast" id="interview-toast" role="status" hidden></div>
+</body>
+</html>
