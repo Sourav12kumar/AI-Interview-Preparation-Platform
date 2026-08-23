@@ -8,8 +8,8 @@
 | 2. Candidate profile | Profile details, target companies, skills, education, and experience | Complete |
 | 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation | Complete |
 | 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Complete |
-| 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Next |
-| 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Planned |
+| 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Complete |
+| 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Next |
 
 ## Browser authentication
 
@@ -76,3 +76,17 @@ The resume workspace integrates with the owned `/api/v1/resumes` collection and 
 - File and analysis deletion requires explicit confirmation and calls the ownership-protected delete endpoint.
 
 Uploaded content and AI-originated text are rendered only with safe DOM text nodes. Access tokens remain in memory, refresh credentials remain in the HttpOnly cookie, and multipart requests are sent only to the same-origin API.
+
+## Coding integration
+
+The coding catalogue and focused editor integrate with `/api/v1/coding/problems` and the user-owned `/api/v1/coding/submissions` history.
+
+- The catalogue supports client-side title/topic search plus difficulty and tag filtering over the active problem list.
+- Solved and attempt indicators are derived from the authenticated candidate's persisted submission history.
+- Problem details expose the statement, tags, difficulty, and starter code for Java, Python, JavaScript, and C++; hidden tests are never returned to the browser.
+- The accessible text editor keeps per-language drafts in module memory, supports Tab indentation, enforces the 100,000-character limit, and confirms starter-code resets.
+- Submissions are disabled while the isolated runner processes a request, preventing accidental duplicate attempts.
+- Final results render only the backend-validated verdict, safe message, score, passed/total test count, execution time, memory, and language.
+- Candidates can load their own earlier source code for review and editing; saving edits creates a new immutable submission rather than changing history.
+
+The Spring Boot process does not execute candidate code. The web interface calls only the same-origin submission API, which delegates to the configured remote runner with server-held hidden tests and resource limits.

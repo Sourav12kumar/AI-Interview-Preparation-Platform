@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Coding problem — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/coding-problem.js"></script>
+</head>
+<body class="coding-room-body">
+<header class="coding-room-header">
+    <a class="brand" href="/coding"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+    <div class="runner-boundary"><span>Isolated runner</span><strong>2 s · 256 MB</strong></div>
+    <a class="button button-ghost" href="/coding">Back to problems</a>
+</header>
+
+<main class="coding-room">
+    <aside class="problem-brief">
+        <div class="problem-brief-head"><p class="eyebrow">Problem brief</p><span class="difficulty-badge" id="problem-difficulty">Loading</span></div>
+        <h1 id="problem-title">Coding problem</h1>
+        <div class="problem-tags" id="problem-tags"></div>
+        <p class="problem-description" id="problem-description">Loading the problem statement…</p>
+        <div class="execution-note"><span>Hidden tests</span><p>Test inputs stay on the runner. Your response contains only the safe final verdict and metrics.</p></div>
+    </aside>
+
+    <section class="coding-stage">
+        <div class="dashboard-loading" id="problem-loading">Loading your coding workspace…</div>
+        <div class="dashboard-error" id="problem-error" hidden><strong>This coding problem could not be loaded.</strong><span>Return to the catalogue and choose another problem.</span></div>
+
+        <div id="problem-content" hidden>
+            <section class="code-editor-panel">
+                <header class="editor-toolbar">
+                    <div><p class="eyebrow">Solution editor</p><h2>Write a complete solution</h2></div>
+                    <label class="language-picker" for="language-select"><span>Language</span><select id="language-select"><option value="JAVA">Java</option><option value="PYTHON">Python</option><option value="JAVASCRIPT">JavaScript</option><option value="CPP">C++</option></select></label>
+                </header>
+                <div class="editor-shell">
+                    <div class="editor-file-bar"><span id="editor-file-name">Solution.java</span><small id="source-count">0 / 100000</small></div>
+                    <textarea id="source-code" maxlength="100000" spellcheck="false" aria-label="Source code editor"></textarea>
+                </div>
+                <div class="field-error" id="source-error"></div>
+                <div class="editor-actions"><button class="button button-ghost" id="reset-code" type="button">Reset starter code</button><button class="button button-primary button-large" id="submit-code" type="button">Submit to runner</button></div>
+            </section>
+
+            <section class="code-result-panel" id="code-result" hidden>
+                <div class="verdict-hero">
+                    <span class="verdict-mark" id="verdict-mark">✓</span>
+                    <div><p class="eyebrow">Submission result</p><h2 id="verdict-title">Accepted</h2><p id="verdict-message">All tests passed.</p></div>
+                    <div class="verdict-score"><strong id="submission-score">100</strong><span>score</span></div>
+                </div>
+                <div class="execution-metrics">
+                    <div><span>Tests passed</span><strong id="tests-passed">0 / 0</strong></div>
+                    <div><span>Execution time</span><strong id="execution-time">—</strong></div>
+                    <div><span>Memory used</span><strong id="memory-used">—</strong></div>
+                    <div><span>Language</span><strong id="result-language">Java</strong></div>
+                </div>
+            </section>
+
+            <section class="panel problem-submission-history">
+                <div class="section-title-row"><div><span class="section-index">02</span><div><p class="eyebrow">Problem history</p><h2>Your submissions</h2></div></div><span>Choose an attempt to review its code</span></div>
+                <div class="problem-submission-list" id="problem-submission-list"></div>
+            </section>
+        </div>
+    </section>
+</main>
+
+<dialog class="app-dialog confirm-dialog" id="reset-code-dialog">
+    <div class="confirm-icon">↺</div>
+    <h2>Reset the current code?</h2>
+    <p>Your unsaved edits for this language will be replaced with its original starter code.</p>
+    <div class="dialog-actions"><button class="button button-ghost" id="cancel-reset-code" type="button">Keep edits</button><button class="button danger-button" id="confirm-reset-code" type="button">Reset code</button></div>
+</dialog>
+
+<div class="runner-overlay" id="runner-overlay" hidden>
+    <div><span class="runner-loader">⌘</span><p class="eyebrow">Isolated code runner</p><h2>Executing your solution against hidden tests…</h2><p>Compilation and execution can take several seconds. Keep this page open.</p></div>
+</div>
+
+<div class="toast" id="coding-toast" role="status" hidden></div>
+</body>
+</html>
