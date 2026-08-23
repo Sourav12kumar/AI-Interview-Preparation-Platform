@@ -8,7 +8,7 @@ This document is the repeatable promotion checklist for InterviewPilot. A releas
 |---|---|---|
 | Java and frontend validation | `Backend CI / test` | Maven verification and syntax validation pass |
 | Production image | `Backend CI / container` | Docker image builds from the same commit |
-| Browser and accessibility | `Backend CI / browser` | Chromium smoke journey and automated WCAG A/AA scans pass against MySQL |
+| Browser and accessibility | `Browser Release Gate / browser` | Chromium smoke journey and automated WCAG A/AA scans pass against MySQL |
 | Static security analysis | `CodeQL` | Java/Kotlin and JavaScript/TypeScript analyses complete without an unresolved release-blocking alert |
 | Release package | `Release Candidate` | JAR, example environment, checklist, and SHA-256 checksum are uploaded together |
 
