@@ -79,6 +79,17 @@ class FrontendIntegrationTest {
         mockMvc.perform(get("/js/profile.js"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("/api/v1/profile")));
+        mockMvc.perform(get("/interviews"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("interviews"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Mock interview studio")));
+        mockMvc.perform(get("/interviews/42"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("interview-session"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Question map")));
+        mockMvc.perform(get("/js/interview-session.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("/answers")));
     }
 
     @Test

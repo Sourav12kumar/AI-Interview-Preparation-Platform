@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Frontend Module 2
+## Current status: Frontend Module 3
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -51,6 +51,10 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Target-company chip management with duplicate and maximum-count safeguards
 - Skill inventory with proficiency, years used, create, update, and remove flows
 - Profile completion guidance, empty states, validation feedback, and protected deletion
+- Mock-interview configuration for type, difficulty, target role, and 1–10 questions
+- Gemini generation states, interview history, status filters, and session continuation
+- Focused question room with timer, progress map, answer submission, and review navigation
+- Five-dimensional AI feedback with strengths, improvements, ideal answers, and final score
 
 ## Prerequisites
 
@@ -100,6 +104,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 - [Database design](docs/database-design.md)
 - [Operations and deployment](docs/operations.md)
 - [Frontend architecture](docs/frontend.md)
+- [Windows download and local setup](docs/windows-local-setup.md)
 
 ## Current API
 
@@ -108,7 +113,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 | `GET` | `/api/v1/health` | Public | Application health check |
 | `GET` | `/actuator/health` | Public | Infrastructure health check |
 | `GET` | `/actuator/prometheus` | Admin JWT | Prometheus metrics |
-| `GET` | `/`, `/login`, `/register`, `/dashboard`, `/profile` | Public shell | Render responsive web pages; protected data still requires browser authentication |
+| `GET` | `/`, `/login`, `/register`, `/dashboard`, `/profile`, `/interviews`, `/interviews/{id}` | Public shell | Render responsive web pages; protected data still requires browser authentication |
 | `POST` | `/api/v1/auth/register` | Public | Register and receive a token pair |
 | `POST` | `/api/v1/auth/login` | Public | Authenticate and receive a token pair |
 | `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
@@ -155,4 +160,4 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 
 ## Next delivery
 
-The next frontend module builds the mock-interview workspace: interview configuration, Gemini question generation, guided answer submission, evaluation feedback, and session history. Resume, coding, detailed analytics, and admin workspaces follow.
+The next frontend module builds the resume workspace: secure upload, history, ATS analysis configuration, keyword gaps, strengths, weaknesses, and actionable suggestions. Coding, detailed analytics, and admin workspaces follow.

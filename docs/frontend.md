@@ -6,8 +6,8 @@
 |---|---|---|
 | 1. Foundation and auth | Landing page, registration, login, secure refresh cookie, dashboard shell | Complete |
 | 2. Candidate profile | Profile details, target companies, skills, education, and experience | Complete |
-| 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation | Next |
-| 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Planned |
+| 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation | Complete |
+| 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Next |
 | 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Planned |
 | 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Planned |
 
@@ -48,3 +48,17 @@ The candidate profile page uses the same in-memory access-token client and integ
 - Profile deletion requires an explicit confirmation and removes profile fields, target companies, and skill assignments without deleting the account.
 
 All API-originated content is rendered using safe DOM text nodes. Validation errors are mapped to their fields, and destructive operations preserve clear scope and confirmation.
+
+## Interview integration
+
+The interview studio integrates with `/api/v1/interviews` and the owned `/api/v1/interviews/{sessionId}/answers` collection.
+
+- Candidates configure interview type, difficulty, question count, and an optional target-role override.
+- Session history shows created, in-progress, and completed interviews without exposing another user's data.
+- The interview room loads persisted questions and answers, resumes at the first unanswered question, and supports review of completed feedback.
+- A local timer records bounded response time; it is not used as a score and stops at the backend's 7,200-second maximum.
+- Answer text is submitted once per question. The UI never provides an overwrite path for evaluated answers.
+- Gemini evaluation renders technical, relevance, clarity, confidence, and overall scores with native progress elements, plus strengths, improvements, and an ideal answer.
+- The final score is read from the completed server-side session rather than calculated in the browser.
+
+Generation and evaluation can take several seconds. Full-screen progress states prevent accidental duplicate submissions while the backend processes a Gemini request.

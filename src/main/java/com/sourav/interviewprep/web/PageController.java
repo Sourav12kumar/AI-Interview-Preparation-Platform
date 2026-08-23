@@ -30,4 +30,14 @@ public class PageController {
     String profile() {
         return "profile";
     }
+
+    @GetMapping("/interviews")
+    String interviews() {
+        return "interviews";
+    }
+
+    @GetMapping("/interviews/{sessionId}")
+    String interviewSession() {
+        return "interview-session";
+    }
 }
