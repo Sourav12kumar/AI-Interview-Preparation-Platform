@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create account — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/auth-page.js"></script>
+</head>
+<body class="auth-body">
+<main class="auth-layout">
+    <section class="auth-story register-story">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <div class="auth-quote">
+            <p class="eyebrow">Build your preparation system</p>
+            <blockquote>One profile. Every practice signal. A clearer path to your next role.</blockquote>
+            <ul class="benefit-list">
+                <li><span>✓</span> Personalized Gemini interviews</li>
+                <li><span>✓</span> Resume and coding feedback</li>
+                <li><span>✓</span> Measurable progress insights</li>
+            </ul>
+        </div>
+    </section>
+    <section class="auth-panel">
+        <div class="auth-card">
+            <a class="mobile-brand brand" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+            <p class="eyebrow">Start practising</p>
+            <h1>Create your account.</h1>
+            <p class="auth-intro">Set up your private preparation workspace in less than a minute.</p>
+            <div class="form-alert" id="form-alert" role="alert" hidden></div>
+            <form id="auth-form" data-mode="register" novalidate>
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" autocomplete="name" maxlength="120" placeholder="Your full name" required>
+                <span class="field-error" data-error-for="fullName"></span>
+
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" autocomplete="email" maxlength="190" placeholder="you@example.com" required>
+                <span class="field-error" data-error-for="email"></span>
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="At least 8 characters" required>
+                <span class="field-error" data-error-for="password"></span>
+
+                <label for="confirmPassword">Confirm password</label>
+                <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
+                <span class="field-error" data-error-for="confirmPassword"></span>
+
+                <button class="button button-primary button-submit" type="submit">
+                    <span>Create account</span><span aria-hidden="true">→</span>
+                </button>
+            </form>
+            <p class="auth-switch">Already have an account? <a href="/login">Log in</a></p>
+        </div>
+    </section>
+</main>
+</body>
+</html>

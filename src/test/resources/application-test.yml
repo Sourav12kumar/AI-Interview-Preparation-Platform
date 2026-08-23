@@ -9,8 +9,16 @@ spring:
       ddl-auto: create-drop
   flyway:
     enabled: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
 
 app:
+  resume:
+    storage-dir: target/test-resumes
+    max-file-size: 5MB
+    max-extracted-characters: 100000
   security:
     jwt:
       issuer: ai-interview-preparation-platform-test

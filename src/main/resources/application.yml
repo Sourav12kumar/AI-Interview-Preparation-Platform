@@ -18,18 +18,34 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
 
 server:
   port: ${SERVER_PORT:8080}
+  shutdown: graceful
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
   endpoint:
     health:
       show-details: never
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 info:
   app:
@@ -41,9 +57,27 @@ gemini:
   model: ${GEMINI_MODEL:gemini-2.5-flash}
 
 app:
+  rate-limit:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    window: ${RATE_LIMIT_WINDOW:PT1M}
+    general-requests: ${RATE_LIMIT_GENERAL_REQUESTS:300}
+    auth-requests: ${RATE_LIMIT_AUTH_REQUESTS:60}
+    ai-requests: ${RATE_LIMIT_AI_REQUESTS:60}
+    max-tracked-keys: ${RATE_LIMIT_MAX_TRACKED_KEYS:10000}
+  coding:
+    runner:
+      base-url: ${CODE_RUNNER_BASE_URL:}
+      api-key: ${CODE_RUNNER_API_KEY:}
+      connect-timeout: ${CODE_RUNNER_CONNECT_TIMEOUT:PT3S}
+      request-timeout: ${CODE_RUNNER_REQUEST_TIMEOUT:PT10S}
+  resume:
+    storage-dir: ${RESUME_STORAGE_DIR:./data/resumes}
+    max-file-size: ${RESUME_MAX_FILE_SIZE:5MB}
+    max-extracted-characters: ${RESUME_MAX_EXTRACTED_CHARACTERS:100000}
   security:
+    browser-cookie-secure: ${AUTH_COOKIE_SECURE:false}
     jwt:
       issuer: ai-interview-preparation-platform
-      secret: ${JWT_SECRET:local-development-secret-change-before-production-1234567890}
+      secret: ${JWT_SECRET}
       access-ttl: ${JWT_ACCESS_TTL:PT15M}
       refresh-ttl: ${JWT_REFRESH_TTL:P7D}

@@ -1,22 +1,53 @@
 services:
+  backend:
+    build:
+      context: .
+    container_name: ai-interview-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/ai_interview_prep?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: ${DB_USERNAME:-interview_user}
+      DB_PASSWORD: ${DB_PASSWORD:-change_me}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      CODE_RUNNER_BASE_URL: ${CODE_RUNNER_BASE_URL:-}
+      CODE_RUNNER_API_KEY: ${CODE_RUNNER_API_KEY:-}
+      RESUME_STORAGE_DIR: /app/data/resumes
+      RATE_LIMIT_ENABLED: ${RATE_LIMIT_ENABLED:-true}
+    ports:
+      - "8080:8080"
+    volumes:
+      - resume_data:/app/data/resumes
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+
   mysql:
     image: mysql:8.4
     container_name: ai-interview-mysql
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ai_interview_prep
-      MYSQL_USER: interview_user
-      MYSQL_PASSWORD: change_me
-      MYSQL_ROOT_PASSWORD: root_change_me
+      MYSQL_USER: ${DB_USERNAME:-interview_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-change_me}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_change_me}
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot_change_me"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
       retries: 10
 
 volumes:
   mysql_data:
+  resume_data:

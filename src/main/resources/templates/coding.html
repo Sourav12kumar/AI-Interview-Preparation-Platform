@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Coding practice — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/coding.js"></script>
+</head>
+<body class="dashboard-body">
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <nav class="side-nav" aria-label="Workspace navigation">
+            <a href="/dashboard"><span>⌂</span> Overview</a>
+            <a href="/profile"><span>◇</span> Candidate profile</a>
+            <a href="/interviews"><span>◎</span> Mock interviews</a>
+            <a href="/resumes"><span>⌁</span> Resume analysis</a>
+            <a class="active" href="/coding"><span>⌘</span> Coding practice</a>
+            <a href="/dashboard#insights"><span>↗</span> Analytics</a>
+        </nav>
+        <div class="sidebar-foot">
+            <p>Solutions execute only through the configured isolated code runner.</p>
+            <a class="button button-light" href="#problem-catalogue">Choose a problem</a>
+            <button id="logout-button" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main coding-main">
+        <header class="dashboard-header coding-header">
+            <button class="menu-button" id="menu-button" type="button" aria-label="Toggle navigation">☰</button>
+            <div><p class="eyebrow">Coding workspace</p><h1>Build the skill behind the <span>answer.</span></h1><p class="page-intro">Choose a focused problem, write a complete solution, and learn from test verdicts and performance metrics.</p></div>
+            <a class="button button-primary button-large" id="continue-coding" href="#problem-catalogue">Choose problem</a>
+        </header>
+
+        <div class="dashboard-loading" id="coding-loading">Restoring your secure session…</div>
+        <div class="dashboard-error" id="coding-error" hidden><strong>We could not load coding practice.</strong><span>Please refresh or log in again.</span></div>
+
+        <div id="coding-content" hidden>
+            <section class="coding-stats" aria-label="Coding practice summary">
+                <article><span>Available problems</span><strong id="problem-total">0</strong></article>
+                <article><span>Submissions</span><strong id="submission-total">0</strong></article>
+                <article><span>Problems solved</span><strong id="solved-total">0</strong></article>
+                <article class="coding-stat-dark"><span>Acceptance rate</span><strong id="acceptance-rate">—</strong></article>
+            </section>
+
+            <section class="panel problem-catalogue-panel" id="problem-catalogue">
+                <div class="section-title-row catalogue-title"><div><span class="section-index">01</span><div><p class="eyebrow">Problem catalogue</p><h2>Choose your next challenge</h2></div></div><span id="problem-count-label">0 problems</span></div>
+                <div class="problem-filters">
+                    <label class="problem-search"><span>⌕</span><input id="problem-search" type="search" maxlength="120" placeholder="Search title, tag, or topic" aria-label="Search coding problems"></label>
+                    <label><span>Difficulty</span><select id="difficulty-filter"><option value="ALL">All levels</option><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></label>
+                    <label><span>Tag</span><select id="tag-filter"><option value="ALL">All topics</option></select></label>
+                </div>
+                <div class="problem-grid" id="problem-grid"></div>
+            </section>
+
+            <section class="panel submission-history-panel">
+                <div class="section-title-row"><div><span class="section-index">02</span><div><p class="eyebrow">Submission history</p><h2>Recent attempts</h2></div></div><span>Newest first</span></div>
+                <div class="submission-list" id="submission-list"></div>
+            </section>
+
+            <section class="coding-guidance">
+                <div><span>01</span><strong>Read the contract</strong><p>Understand inputs and expected output before typing.</p></div>
+                <div><span>02</span><strong>Reason about edges</strong><p>Empty, duplicate, and boundary cases often reveal the design.</p></div>
+                <div><span>03</span><strong>Learn from verdicts</strong><p>Use each result to refine correctness and complexity.</p></div>
+            </section>
+        </div>
+    </main>
+</div>
+</body>
+</html>

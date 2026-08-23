@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resume analysis — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/resumes.js"></script>
+</head>
+<body class="dashboard-body">
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <nav class="side-nav" aria-label="Workspace navigation">
+            <a href="/dashboard"><span>⌂</span> Overview</a>
+            <a href="/profile"><span>◇</span> Candidate profile</a>
+            <a href="/interviews"><span>◎</span> Mock interviews</a>
+            <a class="active" href="/resumes"><span>⌁</span> Resume analysis</a>
+            <a href="/coding"><span>⌘</span> Coding practice</a>
+            <a href="/dashboard#insights"><span>↗</span> Analytics</a>
+        </nav>
+        <div class="sidebar-foot">
+            <p>Gemini compares your resume with the role and job description you provide.</p>
+            <a class="button button-light" href="/profile">Review career target</a>
+            <button id="logout-button" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main resumes-main">
+        <header class="dashboard-header resumes-header">
+            <button class="menu-button" id="menu-button" type="button" aria-label="Toggle navigation">☰</button>
+            <div><p class="eyebrow">Resume workspace</p><h1>Turn your resume into a <span>stronger signal.</span></h1><p class="page-intro">Upload a private resume, compare it with a real role, and use Gemini feedback to make focused improvements.</p></div>
+            <button class="button button-primary button-large" id="header-upload-button" type="button">Upload resume</button>
+        </header>
+
+        <div class="dashboard-loading" id="resumes-loading">Restoring your secure session…</div>
+        <div class="dashboard-error" id="resumes-error" hidden><strong>We could not load your resume workspace.</strong><span>Please refresh or log in again.</span></div>
+
+        <div id="resumes-content" hidden>
+            <section class="resume-stats" aria-label="Resume analysis summary">
+                <article><span>Uploaded resumes</span><strong id="resume-total">0</strong></article>
+                <article><span>Completed analyses</span><strong id="resume-completed">0</strong></article>
+                <article><span>Best ATS score</span><strong id="resume-best-score">—</strong></article>
+                <article class="resume-stat-dark"><span>Latest target</span><strong id="resume-latest-role">Not set</strong></article>
+            </section>
+
+            <section class="resume-workspace-grid">
+                <div class="resume-library-column">
+                    <article class="panel upload-panel">
+                        <div class="section-title-row"><div><span class="section-index">01</span><div><p class="eyebrow">Private upload</p><h2>Add a resume</h2></div></div></div>
+                        <label class="resume-drop-zone" id="resume-drop-zone" for="resume-file">
+                            <input id="resume-file" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+                            <span class="upload-mark">↑</span>
+                            <strong id="upload-title">Choose or drop a file</strong>
+                            <small id="upload-copy">PDF, DOCX, or TXT · maximum 5 MB</small>
+                        </label>
+                        <div class="form-alert" id="upload-alert" role="alert" hidden></div>
+                        <button class="button button-primary upload-action" id="upload-resume" type="button" disabled>Upload securely</button>
+                        <p class="privacy-note"><span>✓</span>Your file stays private and is only available through your authenticated account.</p>
+                    </article>
+
+                    <article class="panel resume-history-panel">
+                        <div class="section-title-row"><div><span class="section-index">02</span><div><p class="eyebrow">Resume history</p><h2>Your files</h2></div></div></div>
+                        <div class="resume-list" id="resume-list"></div>
+                    </article>
+                </div>
+
+                <div class="resume-detail-column">
+                    <section class="panel resume-empty-detail" id="resume-empty-detail">
+                        <span>⌁</span><h2>Select a resume to begin</h2><p>Upload a resume or choose one from your history to configure a role-specific ATS analysis.</p>
+                    </section>
+
+                    <div id="resume-detail" hidden>
+                        <article class="panel resume-analysis-card">
+                            <div class="resume-file-head">
+                                <span class="file-type-badge" id="selected-file-type">PDF</span>
+                                <div><p class="eyebrow">Selected resume</p><h2 id="selected-file-name">Resume</h2><span id="selected-file-meta">Uploaded today</span></div>
+                                <button class="delete-resume-button" id="open-delete-resume" type="button">Delete</button>
+                            </div>
+
+                            <form id="analysis-form" class="analysis-form" novalidate>
+                                <div class="section-title-row"><div><span class="section-index">03</span><div><p class="eyebrow">Gemini ATS analysis</p><h2>Set the comparison target</h2></div></div><span id="analysis-status-label">Ready to analyze</span></div>
+                                <div class="field">
+                                    <label for="analysis-target-role">Target role</label>
+                                    <input id="analysis-target-role" maxlength="120" placeholder="Java Backend Developer" required>
+                                    <small>Your saved profile role is used as the starting value.</small>
+                                    <span class="field-error" data-analysis-error="targetRole"></span>
+                                </div>
+                                <div class="field">
+                                    <label for="job-description">Job description <span class="optional-label">Optional</span></label>
+                                    <textarea id="job-description" maxlength="20000" rows="9" placeholder="Paste the responsibilities, requirements, and preferred skills from a real job posting."></textarea>
+                                    <div class="field-meta"><span>More context produces a more specific keyword comparison.</span><span id="job-description-count">0 / 20000</span></div>
+                                    <span class="field-error" data-analysis-error="jobDescription"></span>
+                                </div>
+                                <div class="form-alert" id="analysis-alert" role="alert" hidden></div>
+                                <button class="button button-primary button-large analyze-action" id="analyze-resume" type="submit">Analyze with Gemini</button>
+                            </form>
+                        </article>
+
+                        <section class="resume-result" id="resume-result" hidden>
+                            <article class="ats-summary-card">
+                                <div class="ats-score-block"><span>ATS match</span><strong id="ats-score">0</strong><small>/ 100</small></div>
+                                <div class="ats-summary-copy"><p class="eyebrow">Analysis summary</p><h2 id="ats-verdict">Resume analysis complete</h2><p id="ats-summary"></p><progress id="ats-progress" max="100" value="0">0%</progress><small id="analysis-model">Analyzed by Gemini</small></div>
+                            </article>
+
+                            <div class="resume-feedback-grid">
+                                <article class="panel"><span class="feedback-icon positive">+</span><h3>Strengths</h3><ul id="resume-strengths"></ul></article>
+                                <article class="panel"><span class="feedback-icon improve">↗</span><h3>Weaknesses</h3><ul id="resume-weaknesses"></ul></article>
+                            </div>
+
+                            <article class="panel keyword-panel">
+                                <div><p class="eyebrow">Keyword gap</p><h2>Terms to address truthfully</h2><p>Only add a keyword when your experience genuinely supports it.</p></div>
+                                <div class="keyword-list" id="missing-keywords"></div>
+                            </article>
+
+                            <article class="panel suggestion-panel">
+                                <div class="section-title-row"><div><span class="section-index">04</span><div><p class="eyebrow">Action plan</p><h2>Improve your next version</h2></div></div></div>
+                                <ol class="suggestion-list" id="resume-suggestions"></ol>
+                            </article>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<dialog class="app-dialog confirm-dialog" id="delete-resume-dialog">
+    <div class="confirm-icon">!</div>
+    <h2>Delete this resume?</h2>
+    <p>This removes the uploaded file and its analysis permanently. It cannot be undone.</p>
+    <div class="dialog-actions"><button class="button button-ghost" id="cancel-delete-resume" type="button">Keep resume</button><button class="button danger-button" id="confirm-delete-resume" type="button">Delete resume</button></div>
+</dialog>
+
+<div class="generation-overlay" id="resume-overlay" hidden>
+    <div class="generation-card"><span class="ai-loader">✦</span><p class="eyebrow" id="resume-overlay-label">Gemini ATS analysis</p><h2 id="resume-overlay-title">Comparing your experience with the target role…</h2><p id="resume-overlay-copy">Reviewing skills, evidence, keywords, and improvement opportunities.</p></div>
+</div>
+
+<div class="toast" id="resume-toast" role="status" hidden></div>
+</body>
+</html>

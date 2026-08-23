@@ -15,6 +15,7 @@ erDiagram
     USERS ||--o{ CODING_SUBMISSIONS : makes
     CODING_PROBLEMS ||--o{ CODING_SUBMISSIONS : receives
     USERS ||--o{ PERFORMANCE_REPORTS : owns
+    USERS ||--o{ AUDIT_EVENTS : performs
 ```
 
 ## Table responsibilities
@@ -25,14 +26,15 @@ erDiagram
 | `roles`, `user_roles` | Role-based authorization |
 | `user_profiles` | Education, experience, target role/company and biography |
 | `skills`, `user_skills` | Normalized skill catalogue and candidate proficiency |
-| `resumes` | Private file metadata, extracted text and Gemini analysis |
+| `resumes` | Private file metadata, extracted text, lifecycle state, target role, and Gemini ATS analysis |
 | `interview_sessions` | One configured mock interview and its overall result |
 | `interview_questions` | Ordered generated or curated questions |
 | `interview_answers` | Candidate response and response time |
 | `answer_evaluations` | Gemini scores, feedback and ideal answer |
-| `coding_problems` | Problem statement, starter code and test cases |
-| `coding_submissions` | Source, verdict, performance and score |
-| `performance_reports` | Periodic aggregate scores and AI recommendations |
+| `coding_problems` | Problem statement, per-language starter code, tags, and server-only test cases |
+| `coding_submissions` | Owned source, final verdict, test counts, performance, score, and safe runner message |
+| `performance_reports` | One owned snapshot per date range with aggregate scores, topic rankings, Gemini summary, recommendations, model, and prompt version |
+| `audit_events` | Append-only administrator actions with actor, target, outcome, correlation ID, metadata, and timestamp |
 
 ## Design decisions
 
@@ -43,5 +45,9 @@ erDiagram
 - Scores use `DECIMAL(5,2)` to avoid floating-point rounding surprises.
 - Times are persisted in UTC with microsecond precision.
 - Flyway owns the schema; JPA uses `ddl-auto=validate` outside tests.
+- Coding problems are soft-published with `active`; hidden `test_cases` are never represented in API response DTOs.
+- Coding submission metrics and scores have database constraints in addition to runner-response validation.
+- Performance reports enforce unique user/date-range snapshots and bounded aggregate scores; refreshing a range updates its existing report.
+- Audit actors become `NULL` if a user is removed, preserving the immutable event history and target metadata.
 
-The executable design is `src/main/resources/db/migration/V1__create_initial_schema.sql`.
+The executable design is the ordered Flyway migration set under `src/main/resources/db/migration`.
