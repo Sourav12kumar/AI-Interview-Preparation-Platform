@@ -1,6 +1,6 @@
 :root {
     --ink: #14201c;
-    --muted: #64716c;
+    --muted: #5b6863;
     --paper: #f6f7f2;
     --white: #ffffff;
     --line: #dfe4dc;
@@ -125,7 +125,7 @@ button, input { font: inherit; }
 .form-alert { margin-bottom: 14px; padding: 12px 14px; border-radius: 10px; color: #762c2c; background: #fff0f0; font-size: .84rem; }
 .auth-switch { margin-top: 24px; text-align: center; color: var(--muted); font-size: .88rem; }
 .auth-switch a { color: var(--green); font-weight: 800; }
-.auth-security { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); color: #89938f; font-size: .72rem; line-height: 1.55; }
+.auth-security { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: .72rem; line-height: 1.55; }
 .mobile-brand { display: none; margin-bottom: 42px; }
 
 .dashboard-body { background: #eef1eb; }
