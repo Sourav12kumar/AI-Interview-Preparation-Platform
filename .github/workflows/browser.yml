@@ -34,7 +34,7 @@ jobs:
       JWT_SECRET: e2e-only-jwt-secret-not-valid-for-production-2026
       AUTH_COOKIE_SECURE: "false"
       RATE_LIMIT_ENABLED: "false"
-      RESUME_STORAGE_DIR: "${{ runner.temp }}/resumes"
+      RESUME_STORAGE_DIR: /tmp/interview-pilot-e2e-resumes
     steps:
       - name: Check out source
         uses: actions/checkout@v4
