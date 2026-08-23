@@ -9,7 +9,7 @@
 | 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation | Complete |
 | 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Complete |
 | 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Complete |
-| 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Next |
+| 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Complete |
 
 ## Browser authentication
 
@@ -90,3 +90,27 @@ The coding catalogue and focused editor integrate with `/api/v1/coding/problems`
 - Candidates can load their own earlier source code for review and editing; saving edits creates a new immutable submission rather than changing history.
 
 The Spring Boot process does not execute candidate code. The web interface calls only the same-origin submission API, which delegates to the configured remote runner with server-held hidden tests and resource limits.
+
+## Analytics integration
+
+The detailed analytics workspace integrates with `/api/v1/analytics/dashboard` and the owned performance-report collection.
+
+- Candidates can select 7, 30, 90, or 366-day periods or provide a validated custom UTC date range.
+- Overview metrics, daily points, acceptance rate, and topic averages are displayed exactly as returned by the backend.
+- An accessible same-origin SVG chart compares daily interview and coding averages without loading a third-party chart library.
+- Topic lists show source, attempt count, average score, and native progress semantics for strong and improvement signals.
+- Gemini coaching generation uses the active period, refreshes the unique stored report for that range, and provides owned history/detail views.
+- Empty periods, invalid dates, missing practice data, AI delays, and API errors have explicit user-facing states.
+
+## Administration integration
+
+The administration shell checks the browser user role for a clear user experience, while every `/api/v1/admin/**` request remains authoritatively protected by Spring Security.
+
+- Platform overview shows user, problem, submission, and interview counts.
+- User management supports bounded search/status filters and ACTIVE/SUSPENDED changes. Self-suspension is disabled in the UI and rejected by the backend.
+- Suspending an account revokes active refresh sessions through the existing service workflow.
+- Coding-problem management supports create, full edit/reactivation, and audited deactivation with four-language starter code, 1–100 hidden tests, and 1–20 tags.
+- Client validation checks JSON shape and documented limits before submission; backend validation remains authoritative.
+- The audit view displays immutable actor, action, target, outcome, correlation ID, metadata, and timestamp fields using safe text nodes.
+
+Privileged and destructive actions require explicit confirmation. Administrator mutations refresh overview and audit information without modifying historical events in the browser.

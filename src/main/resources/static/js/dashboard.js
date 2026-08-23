@@ -31,6 +31,7 @@ function renderUser(user) {
     document.querySelector("#profile-name").textContent = user.fullName;
     document.querySelector("#user-initial").textContent = firstName.charAt(0).toUpperCase();
     document.querySelector("#profile-role").textContent = user.roles.includes("ROLE_ADMIN") ? "Administrator" : "Candidate";
+    document.querySelector("#dashboard-admin-link").hidden = !user.roles.includes("ROLE_ADMIN");
 }
 
 function renderDashboard(data) {

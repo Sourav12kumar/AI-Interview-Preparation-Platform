@@ -108,6 +108,20 @@ class FrontendIntegrationTest {
         mockMvc.perform(get("/js/coding-problem.js"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("/submissions")));
+        mockMvc.perform(get("/analytics"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("analytics"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Performance analytics")));
+        mockMvc.perform(get("/js/analytics.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("/api/v1/analytics/reports")));
+        mockMvc.perform(get("/admin"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Platform administration")));
+        mockMvc.perform(get("/js/admin.js"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("/api/v1/admin/audit-events")));
     }
 
     @Test

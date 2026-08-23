@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Frontend Module 5
+## Current status: Frontend Module 6 complete
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -65,6 +65,13 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Isolated-runner submission flow with duplicate-submit protection and unavailable-runner feedback
 - Final verdict, hidden-test count, score, execution time, memory, and language result details
 - User-owned submission history with safe source-code review and resubmission workflow
+- Custom 7/30/90/366-day analytics periods with exact server-calculated overview metrics
+- Accessible interview/coding trend chart and strongest/improvement topic score breakdowns
+- Gemini coaching-report generation, refresh, history, and owned detail views
+- Role-aware administrator entry point with server-enforced `ROLE_ADMIN` authorization
+- Administrator user search, status filtering, suspension/activation, and session revocation flow
+- Coding-problem create, edit, reactivate, deactivate, starter-code, hidden-test, and tag management
+- Immutable privileged audit trail with actor, target, outcome, correlation ID, and safe metadata display
 
 ## Prerequisites
 
@@ -123,7 +130,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 | `GET` | `/api/v1/health` | Public | Application health check |
 | `GET` | `/actuator/health` | Public | Infrastructure health check |
 | `GET` | `/actuator/prometheus` | Admin JWT | Prometheus metrics |
-| `GET` | `/`, `/login`, `/register`, `/dashboard`, `/profile`, `/interviews`, `/interviews/{id}`, `/resumes`, `/coding`, `/coding/{id}` | Public shell | Render responsive web pages; protected data still requires browser authentication |
+| `GET` | `/`, `/login`, `/register`, `/dashboard`, `/profile`, `/interviews`, `/interviews/{id}`, `/resumes`, `/coding`, `/coding/{id}`, `/analytics`, `/admin` | Public shell | Render responsive web pages; protected data still requires browser authentication and admin APIs still require `ROLE_ADMIN` |
 | `POST` | `/api/v1/auth/register` | Public | Register and receive a token pair |
 | `POST` | `/api/v1/auth/login` | Public | Authenticate and receive a token pair |
 | `POST` | `/api/v1/auth/refresh` | Refresh JWT | Rotate a refresh token and issue a new pair |
@@ -170,4 +177,4 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 
 ## Next delivery
 
-The next frontend module builds detailed analytics and administration workspaces: trends, saved Gemini coaching reports, user controls, coding-problem management, and audit history.
+All planned frontend modules are complete. The next delivery should focus on end-to-end browser tests, accessibility review, production deployment configuration, and release hardening.
