@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administration — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/admin.js"></script>
+</head>
+<body class="dashboard-body">
+<div class="dashboard-layout">
+    <aside class="sidebar admin-sidebar">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <nav class="side-nav" aria-label="Workspace navigation">
+            <a href="/dashboard"><span>⌂</span> Overview</a>
+            <a href="/profile"><span>◇</span> Candidate profile</a>
+            <a href="/interviews"><span>◎</span> Mock interviews</a>
+            <a href="/resumes"><span>⌁</span> Resume analysis</a>
+            <a href="/coding"><span>⌘</span> Coding practice</a>
+            <a href="/analytics"><span>↗</span> Analytics</a>
+            <a class="active" href="/admin"><span>⚙</span> Administration</a>
+        </nav>
+        <div class="sidebar-foot">
+            <p>Privileged mutations are recorded as immutable audit events.</p>
+            <a class="button button-light" href="#audit-section">View audit trail</a>
+            <button id="logout-button" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main admin-main">
+        <header class="dashboard-header admin-header">
+            <button class="menu-button" id="menu-button" type="button" aria-label="Toggle navigation">☰</button>
+            <div><p class="eyebrow">Platform administration</p><h1>Operate with <span>clear accountability.</span></h1><p class="page-intro">Review platform activity, manage account access, maintain coding problems, and inspect privileged changes.</p></div>
+            <button class="button button-primary button-large" id="open-create-problem" type="button">Add problem</button>
+        </header>
+
+        <div class="dashboard-loading" id="admin-loading">Verifying administrator access…</div>
+        <div class="admin-access-denied" id="admin-access-denied" hidden><span>!</span><h2>Administrator access required</h2><p>This workspace is available only to accounts with the <code>ROLE_ADMIN</code> authority.</p><a class="button button-primary" href="/dashboard">Return to dashboard</a></div>
+        <div class="dashboard-error" id="admin-error" hidden><strong>We could not load administration data.</strong><span id="admin-error-message">Please refresh and try again.</span></div>
+
+        <div id="admin-content" hidden>
+            <section class="admin-stats" aria-label="Platform overview">
+                <article><span>Total users</span><strong id="admin-total-users">0</strong><small id="admin-active-users">0 active</small></article>
+                <article><span>Suspended users</span><strong id="admin-suspended-users">0</strong><small>Access disabled</small></article>
+                <article><span>Active problems</span><strong id="admin-active-problems">0</strong><small id="admin-total-problems">0 total</small></article>
+                <article class="admin-stat-dark"><span>Platform activity</span><strong id="admin-activity-total">0</strong><small>Interviews + submissions</small></article>
+            </section>
+
+            <nav class="admin-tabs" aria-label="Administration sections">
+                <button class="active" data-admin-tab="users" type="button">User access</button>
+                <button data-admin-tab="problems" type="button">Coding problems</button>
+                <button data-admin-tab="audit" type="button">Audit trail</button>
+            </nav>
+
+            <section class="panel admin-section" id="users-section" data-admin-panel="users">
+                <div class="section-title-row"><div><span class="section-index">01</span><div><p class="eyebrow">Account access</p><h2>Platform users</h2></div></div><span>Up to 100 newest matches</span></div>
+                <form class="admin-filter-row" id="user-filter-form">
+                    <label class="problem-search"><span>⌕</span><input id="admin-user-search" type="search" maxlength="160" placeholder="Search name or email" aria-label="Search users"></label>
+                    <label><span>Status</span><select id="admin-user-status"><option value="ALL">All statuses</option><option value="ACTIVE">Active</option><option value="SUSPENDED">Suspended</option><option value="PENDING">Pending</option><option value="DELETED">Deleted</option></select></label>
+                    <button class="button button-ghost" type="submit">Apply</button>
+                </form>
+                <div class="admin-user-list" id="admin-user-list"></div>
+            </section>
+
+            <section class="panel admin-section" id="problems-section" data-admin-panel="problems" hidden>
+                <div class="section-title-row"><div><span class="section-index">02</span><div><p class="eyebrow">Coding catalogue</p><h2>Problem management</h2></div></div><button class="button button-primary" id="open-create-problem-inline" type="button">Add problem</button></div>
+                <div class="admin-problem-list" id="admin-problem-list"></div>
+            </section>
+
+            <section class="panel admin-section" id="audit-section" data-admin-panel="audit" hidden>
+                <div class="section-title-row"><div><span class="section-index">03</span><div><p class="eyebrow">Immutable record</p><h2>Privileged audit trail</h2></div></div><button class="button button-ghost" id="refresh-audit" type="button">Refresh</button></div>
+                <div class="audit-list" id="audit-list"></div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<dialog class="app-dialog admin-problem-dialog" id="problem-dialog">
+    <form id="problem-form" method="dialog" novalidate>
+        <div class="dialog-head"><div><p class="eyebrow">Coding catalogue</p><h2 id="problem-dialog-title">Add coding problem</h2></div><button class="dialog-close" id="close-problem-dialog" type="button" aria-label="Close">×</button></div>
+        <input id="admin-problem-id" type="hidden">
+        <div class="form-grid compact-grid">
+            <div class="field"><label for="admin-problem-title">Title</label><input id="admin-problem-title" maxlength="180" required placeholder="Two Sum"><span class="field-error" data-problem-error="title"></span></div>
+            <div class="field"><label for="admin-problem-slug">Slug</label><input id="admin-problem-slug" maxlength="190" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" placeholder="two-sum"><span class="field-error" data-problem-error="slug"></span></div>
+            <div class="field"><label for="admin-problem-difficulty">Difficulty</label><select id="admin-problem-difficulty"><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></div>
+            <label class="admin-active-field"><input id="admin-problem-active" type="checkbox" checked><span><strong>Active problem</strong><small>Visible in the candidate catalogue</small></span></label>
+            <div class="field field-wide"><label for="admin-problem-description">Problem description</label><textarea id="admin-problem-description" maxlength="10000" rows="5" required></textarea><span class="field-error" data-problem-error="description"></span></div>
+            <div class="field field-wide"><label for="admin-problem-tags">Tags</label><input id="admin-problem-tags" maxlength="1220" placeholder="arrays, hash-map" required><small>Comma-separated, 1–20 tags, each up to 60 characters.</small><span class="field-error" data-problem-error="tags"></span></div>
+        </div>
+        <fieldset class="admin-code-fieldset">
+            <legend>Starter code <small>At least one language is required</small></legend>
+            <div class="admin-starter-grid">
+                <label>Java<textarea id="starter-java" rows="5" spellcheck="false"></textarea></label>
+                <label>Python<textarea id="starter-python" rows="5" spellcheck="false"></textarea></label>
+                <label>JavaScript<textarea id="starter-javascript" rows="5" spellcheck="false"></textarea></label>
+                <label>C++<textarea id="starter-cpp" rows="5" spellcheck="false"></textarea></label>
+            </div>
+            <span class="field-error" data-problem-error="starterCode"></span>
+        </fieldset>
+        <div class="field"><label for="admin-test-cases">Hidden test cases (JSON array)</label><textarea id="admin-test-cases" class="json-editor" rows="8" spellcheck="false" placeholder='[{"input":{"value":1},"expected":1}]'></textarea><small>1–100 objects; every item requires <code>input</code> and <code>expected</code>.</small><span class="field-error" data-problem-error="testCases"></span></div>
+        <div class="form-alert" id="problem-form-alert" role="alert" hidden></div>
+        <div class="dialog-actions"><button class="button button-ghost" id="cancel-problem" type="button">Cancel</button><button class="button button-primary" id="save-problem" type="submit">Save problem</button></div>
+    </form>
+</dialog>
+
+<dialog class="app-dialog confirm-dialog" id="admin-confirm-dialog">
+    <div class="confirm-icon">!</div>
+    <h2 id="admin-confirm-title">Confirm change</h2>
+    <p id="admin-confirm-copy">This privileged action will be recorded in the audit trail.</p>
+    <div class="dialog-actions"><button class="button button-ghost" id="cancel-admin-action" type="button">Cancel</button><button class="button danger-button" id="confirm-admin-action" type="button">Confirm</button></div>
+</dialog>
+
+<div class="generation-overlay" id="admin-overlay" hidden>
+    <div class="generation-card"><span class="ai-loader admin-loader">⚙</span><p class="eyebrow">Privileged operation</p><h2 id="admin-overlay-title">Applying the administrator change…</h2><p>The result will be written to the immutable audit trail.</p></div>
+</div>
+
+<div class="toast" id="admin-toast" role="status" hidden></div>
+</body>
+</html>

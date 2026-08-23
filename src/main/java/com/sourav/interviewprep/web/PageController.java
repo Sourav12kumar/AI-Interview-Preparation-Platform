@@ -55,4 +55,14 @@ public class PageController {
     String codingProblem() {
         return "coding-problem";
     }
+
+    @GetMapping("/analytics")
+    String analytics() {
+        return "analytics";
+    }
+
+    @GetMapping("/admin")
+    String admin() {
+        return "admin";
+    }
 }

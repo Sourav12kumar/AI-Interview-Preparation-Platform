@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Performance analytics — InterviewPilot</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <script type="module" src="/js/analytics.js"></script>
+</head>
+<body class="dashboard-body">
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <a class="brand brand-light" href="/"><span class="brand-mark">IP</span><span>InterviewPilot</span></a>
+        <nav class="side-nav" aria-label="Workspace navigation">
+            <a href="/dashboard"><span>⌂</span> Overview</a>
+            <a href="/profile"><span>◇</span> Candidate profile</a>
+            <a href="/interviews"><span>◎</span> Mock interviews</a>
+            <a href="/resumes"><span>⌁</span> Resume analysis</a>
+            <a href="/coding"><span>⌘</span> Coding practice</a>
+            <a class="active" href="/analytics"><span>↗</span> Analytics</a>
+            <a id="analytics-admin-link" href="/admin" hidden><span>⚙</span> Administration</a>
+        </nav>
+        <div class="sidebar-foot">
+            <p>Use trends and coaching reports to choose the next focused practice block.</p>
+            <button class="button button-light" id="generate-report-side" type="button">Generate coaching</button>
+            <button id="logout-button" class="logout-button" type="button">Log out</button>
+        </div>
+    </aside>
+
+    <main class="dashboard-main analytics-main">
+        <header class="dashboard-header analytics-header">
+            <button class="menu-button" id="menu-button" type="button" aria-label="Toggle navigation">☰</button>
+            <div><p class="eyebrow">Performance analytics</p><h1>See the pattern behind your <span>progress.</span></h1><p class="page-intro">Compare interview and coding performance, find recurring topic signals, and save a Gemini coaching plan.</p></div>
+            <button class="button button-primary button-large" id="generate-report-header" type="button">Generate report</button>
+        </header>
+
+        <section class="analytics-period-panel" aria-label="Analytics date range">
+            <div class="period-presets" role="group" aria-label="Quick date ranges">
+                <button data-days="7" type="button">7 days</button>
+                <button class="active" data-days="30" type="button">30 days</button>
+                <button data-days="90" type="button">90 days</button>
+                <button data-days="366" type="button">1 year</button>
+            </div>
+            <form id="analytics-period-form">
+                <label>From <input id="analytics-from" type="date" required></label>
+                <label>To <input id="analytics-to" type="date" required></label>
+                <button class="button button-ghost" type="submit">Apply</button>
+            </form>
+        </section>
+
+        <div class="dashboard-loading" id="analytics-loading">Restoring your secure session…</div>
+        <div class="dashboard-error" id="analytics-error" hidden><strong>We could not load your analytics.</strong><span id="analytics-error-message">Please refresh or choose another period.</span></div>
+
+        <div id="analytics-content" hidden>
+            <section class="analytics-stats" aria-label="Performance summary">
+                <article><span>Interview average</span><strong id="analytics-interview-average">—</strong><small id="analytics-interview-count">0 completed</small></article>
+                <article><span>Coding average</span><strong id="analytics-coding-average">—</strong><small id="analytics-coding-count">0 submissions</small></article>
+                <article><span>Problems attempted</span><strong id="analytics-problems">0</strong><small>Distinct coding problems</small></article>
+                <article class="analytics-stat-dark"><span>Acceptance rate</span><strong id="analytics-acceptance">—</strong><small id="analytics-accepted-count">0 accepted</small></article>
+            </section>
+
+            <section class="panel trend-panel">
+                <div class="section-title-row"><div><span class="section-index">01</span><div><p class="eyebrow">Daily trend</p><h2>Performance over time</h2></div></div><div class="chart-legend"><span class="legend-interview">Interview</span><span class="legend-coding">Coding</span></div></div>
+                <div class="trend-chart" id="trend-chart" role="img" aria-label="Daily interview and coding score trend"></div>
+            </section>
+
+            <section class="topic-analytics-grid">
+                <article class="panel topic-performance-panel">
+                    <div class="section-title-row"><div><span class="section-index">02</span><div><p class="eyebrow">Strongest topics</p><h2>Keep building</h2></div></div></div>
+                    <div class="topic-performance-list" id="strongest-topic-list"></div>
+                </article>
+                <article class="panel topic-performance-panel improvement-performance-panel">
+                    <div class="section-title-row"><div><span class="section-index">03</span><div><p class="eyebrow">Improve next</p><h2>Focus your effort</h2></div></div></div>
+                    <div class="topic-performance-list" id="improvement-topic-list"></div>
+                </article>
+            </section>
+
+            <section class="panel coaching-panel">
+                <div class="section-title-row"><div><span class="section-index">04</span><div><p class="eyebrow">Gemini coaching</p><h2>Saved performance reports</h2></div></div><button class="button button-primary" id="generate-report-inline" type="button">Generate for this period</button></div>
+                <div class="coaching-layout">
+                    <div class="report-list" id="report-list"></div>
+                    <article class="report-detail" id="report-detail">
+                        <div class="report-empty"><span>✦</span><strong>Select or generate a coaching report</strong><p>Gemini converts your server-calculated performance signals into practical next steps.</p></div>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<div class="generation-overlay" id="analytics-overlay" hidden>
+    <div class="generation-card"><span class="ai-loader">✦</span><p class="eyebrow">Gemini performance coach</p><h2>Turning your practice data into a focused plan…</h2><p>Reviewing trends, topic scores, completed interviews, and coding attempts.</p></div>
+</div>
+
+<div class="toast" id="analytics-toast" role="status" hidden></div>
+</body>
+</html>
