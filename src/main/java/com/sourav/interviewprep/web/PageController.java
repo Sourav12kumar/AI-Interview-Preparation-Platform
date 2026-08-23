@@ -40,4 +40,9 @@ public class PageController {
     String interviewSession() {
         return "interview-session";
     }
+
+    @GetMapping("/resumes")
+    String resumes() {
+        return "resumes";
+    }
 }

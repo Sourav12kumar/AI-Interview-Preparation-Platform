@@ -7,8 +7,8 @@
 | 1. Foundation and auth | Landing page, registration, login, secure refresh cookie, dashboard shell | Complete |
 | 2. Candidate profile | Profile details, target companies, skills, education, and experience | Complete |
 | 3. Mock interviews | Interview configuration, question flow, answer submission, and evaluation | Complete |
-| 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Next |
-| 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Planned |
+| 4. Resume workspace | Upload, history, ATS analysis, keyword gaps, and suggestions | Complete |
+| 5. Coding workspace | Problem catalogue, editor integration, submissions, verdicts, and history | Next |
 | 6. Analytics and admin | Trends, saved coaching reports, user controls, problem management, and audit history | Planned |
 
 ## Browser authentication
@@ -62,3 +62,17 @@ The interview studio integrates with `/api/v1/interviews` and the owned `/api/v1
 - The final score is read from the completed server-side session rather than calculated in the browser.
 
 Generation and evaluation can take several seconds. Full-screen progress states prevent accidental duplicate submissions while the backend processes a Gemini request.
+
+## Resume integration
+
+The resume workspace integrates with the owned `/api/v1/resumes` collection and its analysis endpoint.
+
+- Candidates can upload PDF, DOCX, or TXT files up to 5 MB through a file picker or drag-and-drop target.
+- Browser validation provides immediate type, size, and empty-file feedback; the backend remains authoritative and verifies both the extension and detected content.
+- The history view shows private file metadata, analysis state, score, and the current selection without providing a file-download route.
+- Analysis requires a target role, initially populated from the candidate profile, and accepts an optional job description up to 20,000 characters.
+- Gemini results render the server-provided ATS score, summary, strengths, weaknesses, missing keywords, suggestions, model, and analysis time.
+- Reanalysis replaces the stored result through the existing backend workflow. The UI never calculates or modifies the ATS score.
+- File and analysis deletion requires explicit confirmation and calls the ownership-protected delete endpoint.
+
+Uploaded content and AI-originated text are rendered only with safe DOM text nodes. Access tokens remain in memory, refresh credentials remain in the HttpOnly cookie, and multipart requests are sent only to the same-origin API.
