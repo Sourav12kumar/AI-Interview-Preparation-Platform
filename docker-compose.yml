@@ -11,6 +11,7 @@ services:
       DB_URL: jdbc:mysql://mysql:3306/ai_interview_prep?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       DB_USERNAME: ${DB_USERNAME:-interview_user}
       DB_PASSWORD: ${DB_PASSWORD:-change_me}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
       AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}

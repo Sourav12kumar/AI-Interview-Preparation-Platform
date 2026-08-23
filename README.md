@@ -2,7 +2,7 @@
 
 An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL, and Google Gemini. It will generate personalized interview questions, evaluate answers, analyze resumes, manage coding practice, and show performance trends.
 
-## Current status: Frontend Module 6 complete
+## Current status: Release hardening complete
 
 - Requirements and acceptance criteria
 - Architecture and delivery plan
@@ -72,12 +72,20 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Administrator user search, status filtering, suspension/activation, and session revocation flow
 - Coding-problem create, edit, reactivate, deactivate, starter-code, hidden-test, and tag management
 - Immutable privileged audit trail with actor, target, outcome, correlation ID, and safe metadata display
+- Playwright Chromium journeys for registration, authentication, profile persistence, logout, and anonymous redirects
+- Automated axe WCAG A/AA checks for public and authenticated critical pages
+- MySQL-backed browser CI with traces, screenshots, videos, reports, and server logs on failure
+- CodeQL security-extended analysis for Java/Kotlin and JavaScript/TypeScript
+- Manual and version-tag release-candidate packaging with SHA-256 verification
+- Production Spring profile with secure-cookie defaults and bounded database/server capacity controls
+- Promotion, observation, rollback, recovery, and human launch sign-off checklist
 
 ## Prerequisites
 
 - Java 17
 - Maven 3.6.3 or newer
 - Docker Desktop, or MySQL 8.4 installed locally
+- Node.js 24 for browser and accessibility tests
 
 ## Run locally
 
@@ -98,6 +106,14 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 5. Open `http://localhost:8080/api/v1/health`.
 
 To run the complete stack in containers, set `JWT_SECRET` and other required values in `.env`, then run `docker compose up --build`.
+
+To run the browser release gate after the application and MySQL are healthy:
+
+```bash
+npm ci
+npx playwright install chromium
+npm run test:e2e
+```
 
 Expected response:
 
@@ -121,6 +137,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 - [Database design](docs/database-design.md)
 - [Operations and deployment](docs/operations.md)
 - [Frontend architecture](docs/frontend.md)
+- [Release readiness](docs/release-readiness.md)
 - [Windows download and local setup](docs/windows-local-setup.md)
 
 ## Current API
@@ -177,4 +194,4 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 
 ## Next delivery
 
-All planned frontend modules are complete. The next delivery should focus on end-to-end browser tests, accessibility review, production deployment configuration, and release hardening.
+Deploy the immutable release candidate to staging, complete the manual accessibility and operational sign-off, validate live Gemini and isolated-runner journeys, and then promote the same image digest to production.

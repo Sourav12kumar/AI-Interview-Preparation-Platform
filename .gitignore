@@ -34,3 +34,8 @@ data/
 ### Operating systems ###
 .DS_Store
 Thumbs.db
+
+### Browser test artifacts ###
+node_modules/
+playwright-report/
+test-results/

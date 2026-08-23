@@ -1,0 +1,15 @@
+{
+  "name": "ai-interview-preparation-platform-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser and accessibility tests for InterviewPilot",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.62.1"
+  }
+}

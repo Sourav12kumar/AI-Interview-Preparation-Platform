@@ -14,6 +14,8 @@ curl --fail http://localhost:8080/actuator/health
 
 The application container runs as an unprivileged user with a read-only root filesystem. Only `/tmp` and the resume volume are writable. MySQL and resume volumes require independent encrypted backups.
 
+Container deployments activate the `prod` Spring profile by default. It enables secure cookies by default, response compression, bounded request threads, and configurable Hikari pool limits. The local `.env.example` explicitly keeps `AUTH_COOKIE_SECURE=false`; change it to `true` for every HTTPS environment.
+
 The web client is served by the same Spring Boot origin. Set `AUTH_COOKIE_SECURE=true` whenever the public site uses HTTPS. Keep it `false` only for plain-HTTP local development; secure cookies are not returned by browsers over HTTP.
 
 ## Administrator bootstrap
@@ -60,3 +62,5 @@ Audit records are append-only through the application. Restrict direct database 
 - Run the code runner on separate infrastructure with CPU, memory, process, filesystem, time, and outbound-network restrictions.
 - Alert on health failures, rate-limit rejections, elevated 5xx responses, database saturation, and Gemini/runner latency.
 - Drain traffic during graceful shutdown and keep the readiness probe enabled.
+
+Use the complete [release-readiness checklist](release-readiness.md) for automated gates, immutable artifact verification, staging promotion, observation, rollback, and manual launch sign-off.
