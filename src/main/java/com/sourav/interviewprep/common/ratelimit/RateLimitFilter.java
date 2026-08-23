@@ -1,6 +1,7 @@
 package com.sourav.interviewprep.common.ratelimit;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private final Clock clock;
     private final Map<String, WindowEntry> counters = new ConcurrentHashMap<>();
 
+    @Autowired
     public RateLimitFilter(
             RateLimitProperties properties,
             MeterRegistry meterRegistry,
@@ -86,54 +88,3 @@ public class RateLimitFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        long retryMillis = Math.max(1, windowMillis - (now - entry.startedAtMillis()));
-        long retrySeconds = Math.max(1, (retryMillis + 999) / 1000);
-        response.setStatus(429);
-        response.setHeader("Retry-After", Long.toString(retrySeconds));
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getWriter(), Map.of(
-                "timestamp", Instant.ofEpochMilli(now).toString(),
-                "status", 429,
-                "error", "Too Many Requests",
-                "message", "Request rate limit exceeded"));
-        meterRegistry.counter("rate_limit_rejections_total", "scope", scope.name().toLowerCase())
-                .increment();
-    }
-
-    private RateScope scope(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        if (path.startsWith("/api/v1/auth/")) return RateScope.AUTH;
-        if ("POST".equalsIgnoreCase(request.getMethod()) && (
-                path.equals("/api/v1/interviews")
-                        || path.contains("/answers")
-                        || path.matches("/api/v1/resumes/[^/]+/analysis")
-                        || path.equals("/api/v1/analytics/reports")
-                        || (path.contains("/coding/problems/") && path.endsWith("/submissions")))) {
-            return RateScope.AI;
-        }
-        return RateScope.GENERAL;
-    }
-
-    private int limit(RateScope scope) {
-        return switch (scope) {
-            case AUTH -> properties.authRequests();
-            case AI -> properties.aiRequests();
-            case GENERAL -> properties.generalRequests();
-        };
-    }
-
-    private void removeExpired(long now, long windowMillis) {
-        if (counters.size() < properties.maxTrackedKeys() / 2) return;
-        counters.entrySet().removeIf(entry -> now - entry.getValue().startedAtMillis() >= windowMillis);
-    }
-
-    private enum RateScope {
-        GENERAL,
-        AUTH,
-        AI
-    }
-
-    private record WindowEntry(long startedAtMillis, int count) {
-    }
-}
