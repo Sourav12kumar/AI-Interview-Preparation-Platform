@@ -41,7 +41,8 @@ jobs:
           cp target/*.jar release/interview-pilot.jar
           cp .env.example release/env.example
           cp docs/release-readiness.md release/RELEASE-READINESS.md
-          sha256sum release/interview-pilot.jar > release/SHA256SUMS
+          cd release
+          sha256sum interview-pilot.jar > SHA256SUMS
       - name: Build release container
         run: docker build --tag interview-pilot:${{ github.ref_name }} .
       - name: Upload immutable release candidate
