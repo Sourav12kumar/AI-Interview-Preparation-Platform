@@ -34,7 +34,7 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 - Authenticated coding-problem catalogue with difficulty and tag filters
 - Starter code for Java, Python, JavaScript, and C++ without exposing hidden tests
 - User-owned code submissions, verdicts, metrics, scores, and history
-- Remote-only code-runner boundary with timeouts and response validation
+- Project-owned isolated code runner for Java, Python, JavaScript, and C++
 - Date-range analytics dashboard for interview and coding activity
 - Daily score trends, acceptance rate, strongest topics, and improvement topics
 - User-owned persisted performance-report history
@@ -105,7 +105,7 @@ An AI-powered placement-preparation platform built with Java, Spring Boot, MySQL
 
 5. Open `http://localhost:8080/api/v1/health`.
 
-To run the complete stack in containers, set `JWT_SECRET` and other required values in `.env`, then run `docker compose up --build`.
+To run the complete stack—including the project-owned code runner—in containers, set `JWT_SECRET`, `CODE_RUNNER_API_KEY`, and the database passwords in `.env`, then run `docker compose up --build -d`. The first runner startup downloads four language-runtime images and can take several minutes. Use `docker compose logs -f code-runner` to watch progress.
 
 To run the browser release gate after the application and MySQL are healthy:
 
@@ -128,7 +128,7 @@ Expected response:
 
 Gemini powers interview generation, answer evaluation, resume analysis, and performance recommendations. Keep `GEMINI_API_KEY`, `JWT_SECRET`, and `CODE_RUNNER_API_KEY` outside source control; `.env` is ignored by Git. Resume files are stored under `RESUME_STORAGE_DIR` (default `./data/resumes`) and this directory must be private in production.
 
-Code submissions are never executed by the Spring Boot process. Configure `CODE_RUNNER_BASE_URL` to an isolated runner that accepts `POST /v1/execute`; for local development the example URL is `http://localhost:8090`. The runner receives the problem slug, language, source, hidden test cases, and resource limits, then returns a final verdict, test counts, execution time, memory, score, and a safe result message.
+Code submissions are never executed by the Spring Boot process. The included project-owned runner accepts `POST /v1/execute`, starts a disposable no-network container for every hidden test, and enforces CPU, memory, process, wall-clock, source-size, and output limits. Compose connects the backend to it internally at `http://code-runner:8090`; do not publish the runner port. See the runner guide for its security boundary and Windows instructions.
 
 ## Documentation
 
@@ -139,6 +139,7 @@ Code submissions are never executed by the Spring Boot process. Configure `CODE_
 - [Frontend architecture](docs/frontend.md)
 - [Release readiness](docs/release-readiness.md)
 - [Windows download and local setup](docs/windows-local-setup.md)
+- [Project-owned code runner](code-runner/README.md)
 
 ## Current API
 

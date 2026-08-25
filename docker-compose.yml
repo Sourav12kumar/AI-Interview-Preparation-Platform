@@ -7,6 +7,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      code-runner:
+        condition: service_healthy
     environment:
       DB_URL: jdbc:mysql://mysql:3306/ai_interview_prep?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       DB_USERNAME: ${DB_USERNAME:-interview_user}
@@ -16,8 +18,10 @@ services:
       AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
-      CODE_RUNNER_BASE_URL: ${CODE_RUNNER_BASE_URL:-}
-      CODE_RUNNER_API_KEY: ${CODE_RUNNER_API_KEY:-}
+      CODE_RUNNER_BASE_URL: http://code-runner:8090
+      CODE_RUNNER_API_KEY: ${CODE_RUNNER_API_KEY:-local-runner-change-me}
+      CODE_RUNNER_CONNECT_TIMEOUT: ${CODE_RUNNER_CONNECT_TIMEOUT:-PT3S}
+      CODE_RUNNER_REQUEST_TIMEOUT: ${CODE_RUNNER_REQUEST_TIMEOUT:-PT60S}
       RESUME_STORAGE_DIR: /app/data/resumes
       RATE_LIMIT_ENABLED: ${RATE_LIMIT_ENABLED:-true}
     ports:
@@ -40,7 +44,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-change_me}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_change_me}
     ports:
-      - "3306:3306"
+      - "${MYSQL_HOST_PORT:-3307}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -48,6 +52,32 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+
+  code-runner:
+    build:
+      context: ./code-runner
+    container_name: ai-interview-code-runner
+    restart: unless-stopped
+    environment:
+      RUNNER_API_KEY: ${CODE_RUNNER_API_KEY:-local-runner-change-me}
+      RUNNER_MAX_PARALLEL: ${CODE_RUNNER_MAX_PARALLEL:-2}
+    expose:
+      - "8090"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/health', timeout=2)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15m
 
 volumes:
   mysql_data:
