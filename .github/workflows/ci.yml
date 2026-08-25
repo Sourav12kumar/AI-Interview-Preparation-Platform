@@ -30,6 +30,8 @@ jobs:
           for script in src/main/resources/static/js/*.js; do
             node --check "$script"
           done
+      - name: Validate code runner
+        run: python3 -m unittest code-runner/test_runner.py
       - name: Run tests
         run: mvn --batch-mode --update-snapshots verify
 
@@ -41,3 +43,5 @@ jobs:
         uses: actions/checkout@v7
       - name: Build production container
         run: docker build --tag ai-interview-preparation-platform:${{ github.sha }} .
+      - name: Build code-runner controller
+        run: docker build --tag ai-interview-code-runner:${{ github.sha }} code-runner

@@ -9,4 +9,5 @@ target/
 !.env.example
 README.md
 docs/
+code-runner/
 docker-compose.yml
